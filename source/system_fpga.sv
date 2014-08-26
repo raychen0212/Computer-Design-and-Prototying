@@ -29,7 +29,7 @@ module system_fpga (
   // interface
   system_if syif();
   // system
-  system CPU(CLOCK_50,KEY[3],syif);
+  system SYS(CLOCK_50,KEY[3],syif);
 
   // signals we should not use
   assign syif.WEN = 0;
