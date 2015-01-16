@@ -28,9 +28,32 @@ module system_fpga (
 );
   // interface
   system_if syif();
-  // system
-  system SYS(CLOCK_50,KEY[3],syif);
 
+  // auto reset
+  logic nRST;
+  logic auto_nRST;
+  logic [3:0] nRST_count;
+
+  initial begin
+    auto_nRST = '0;
+    nRST_count = '0;
+  end
+
+  always_ff @(posedge CLOCK_50)
+  begin
+    if (nRST_count != 4'hF)
+    begin
+      nRST_count <= nRST_count + '1;
+      auto_nRST <= '0;
+    end
+    else
+    begin
+      auto_nRST <= '1;
+    end
+  end
+
+  // system
+  system SYS(CLOCK_50,nRST,syif);
   // signals we should not use
   assign syif.WEN = 0;
   assign syif.store = 0;
@@ -42,6 +65,7 @@ module system_fpga (
   assign syif.tbCTRL = syif.halt;
   assign syif.REN = syif.halt;
   assign syif.addr = {16'b0,SW[15:0]};
+  assign nRST = KEY[3] & auto_nRST;
 
   always_comb
   begin : HEXZERO
