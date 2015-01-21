@@ -24,6 +24,7 @@ module caches (
   parameter CPUID = 0;
 
   word_t instr;
+  word_t daddr;
 
   // icache
   //icache  ICACHE(dcif, ccif);
@@ -36,11 +37,13 @@ module caches (
     if (!nRST)
     begin
       instr <= '0;
+      daddr <= '0;
     end
     else
-    if (!ccif.iwait[CPUID])
+    if (dcif.ihit)
     begin
       instr <= ccif.iload[CPUID];
+      daddr <= dcif.dmemaddr;
     end
   end
   // dcache invalidate before halt
@@ -58,6 +61,6 @@ module caches (
   assign ccif.dWEN[CPUID] = dcif.dmemWEN;
   assign ccif.dstore[CPUID] = dcif.dmemstore;
   assign ccif.iaddr[CPUID] = dcif.imemaddr;
-  assign ccif.daddr[CPUID] = dcif.dmemaddr;
+  assign ccif.daddr[CPUID] = daddr;
 
 endmodule
