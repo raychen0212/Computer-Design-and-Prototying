@@ -40,5 +40,5 @@ parameter PC1 = 'h200;
   assign ccif.ramload = scif.ramload;
   assign ccif.ramstate = scif.ramstate;
 
-  assign halt = dcif1.flushed & dcif2.flushed;
+  assign halt = dcif0.flushed & dcif1.flushed;
 endmodule
