@@ -8,7 +8,7 @@
 
 // interfaces
 `include "datapath_cache_if.vh"
-`include "cache_control_if.vh"
+`include "caches_if.vh"
 
 // cpu types
 `include "cpu_types_pkg.vh"
@@ -16,7 +16,7 @@
 module caches (
   input logic CLK, nRST,
   datapath_cache_if.cache dcif,
-  cache_control_if.caches ccif
+  caches_if.caches cif
 );
   // import types
   import cpu_types_pkg::word_t;
@@ -27,9 +27,9 @@ module caches (
   word_t daddr;
 
   // icache
-  //icache  ICACHE(dcif, ccif);
+  //icache  ICACHE(dcif, cif);
   // dcache
-  //dcache  DCACHE(dcif, ccif);
+  //dcache  DCACHE(dcif, cif);
 
   // single cycle instr saver (for memory ops)
   always_ff @(posedge CLK)
@@ -42,7 +42,7 @@ module caches (
     else
     if (dcif.ihit)
     begin
-      instr <= ccif.iload;
+      instr <= cif.iload;
       daddr <= dcif.dmemaddr;
     end
   end
@@ -50,17 +50,17 @@ module caches (
   assign dcif.flushed = dcif.halt;
 
   //single cycle
-  assign dcif.ihit = (dcif.imemREN) ? ~ccif.iwait : 0;
-  assign dcif.dhit = (dcif.dmemREN|dcif.dmemWEN) ? ~ccif.dwait : 0;
-  assign dcif.imemload = (ccif.iwait) ? instr : ccif.iload;
-  assign dcif.dmemload = ccif.dload;
+  assign dcif.ihit = (dcif.imemREN) ? ~cif.iwait : 0;
+  assign dcif.dhit = (dcif.dmemREN|dcif.dmemWEN) ? ~cif.dwait : 0;
+  assign dcif.imemload = (cif.iwait) ? instr : cif.iload;
+  assign dcif.dmemload = cif.dload;
 
 
-  assign ccif.iREN = dcif.imemREN;
-  assign ccif.dREN = dcif.dmemREN;
-  assign ccif.dWEN = dcif.dmemWEN;
-  assign ccif.dstore = dcif.dmemstore;
-  assign ccif.iaddr = dcif.imemaddr;
-  assign ccif.daddr = daddr;
+  assign cif.iREN = dcif.imemREN;
+  assign cif.dREN = dcif.dmemREN;
+  assign cif.dWEN = dcif.dmemWEN;
+  assign cif.dstore = dcif.dmemstore;
+  assign cif.iaddr = dcif.imemaddr;
+  assign cif.daddr = daddr;
 
 endmodule
