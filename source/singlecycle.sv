@@ -21,7 +21,7 @@ parameter PC0 = 0;
   caches_if                 cif0();
   // cif1 will not be used, but ccif expects it as an input
   caches_if                 cif1();
-  cache_control_if    #(.CPUS(0))       ccif (cif0, cif1);
+  cache_control_if    #(.CPUS(1))       ccif (cif0, cif1);
 
   // map datapath
   datapath #(.PC_INIT(PC0)) DP (CLK, nRST, dcif);
