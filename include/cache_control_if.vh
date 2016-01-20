@@ -35,7 +35,7 @@ interface cache_control_if(
   // ccwrite        : high if cache is doing a write of addr
   // ccsnoopaddr    : the addr being sent to other cache with either (wb/inv)
   // cctrans        : high if the cache state is transitioning (i.e. I->S, I->M, etc...)
-  logic   [CPUS-1:0]      ccwait, ccinv, ccsi;
+  logic   [CPUS-1:0]      ccwait, ccinv;
   logic   [CPUS-1:0]      ccwrite, cctrans;
   word_t  [CPUS-1:0]      ccsnoopaddr;
 
