@@ -3,6 +3,11 @@
 
   interface to coordinate caches and
   implement coherence protocol
+
+  caches_if connects a single cache to the cache_control_if
+
+  The cache_control_if will pass on the caches_if signals to
+  the memory controller
 */
 `ifndef CACHES_IF_VH
 `define CACHES_IF_VH
@@ -10,7 +15,6 @@
 // ram memory types
 `include "cpu_types_pkg.vh"
 
-// split this into cache_control_if and ram_if
 interface caches_if;
 
   // import types

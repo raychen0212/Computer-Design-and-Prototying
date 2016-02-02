@@ -4,6 +4,16 @@
 
   interface to coordinate caches and
   implement coherence protocol
+
+  Last modified: Spring 2016 by John Skubic
+
+  The cache_control_if has two responsibilities:
+  1) Pack the caches_if signals from one or more caches_if
+  and send it to the memory controller through a single modport.
+
+  2) Provide the memory controller with signals used to 
+  communicate with RAM.
+
 */
 `ifndef CACHE_CONTROL_IF_VH
 `define CACHE_CONTROL_IF_VH
@@ -12,7 +22,6 @@
 `include "cpu_types_pkg.vh"
 `include "caches_if.vh"
 
-// split this into cache_control_if and ram_if
 interface cache_control_if(
   caches_if cif0,
   caches_if cif1
@@ -44,12 +53,18 @@ interface cache_control_if(
   ramstate_t              ramstate;
   word_t                  ramaddr, ramstore, ramload;
 
-  /* These interface assignments are to avoid synthesis errors and
+  /* 
+     These interface assignments are to avoid synthesis errors and
      strange simulation behavior.
 
      For uniprocessors (CPUS == 1), no indexing into the following
-     signals is required.  For multiprocessors, all signals are
-     arrays of 2.
+     signals is required by the memory controller.  For multiprocessors, 
+     all signals are arrays of 2 and must be indexed.
+
+     Note: iREN, dREN, dWEN, dstore, iaddr, daddr, ccwrite, and cctrans
+	   cannot be assigned directly through the cache_control_if. 
+	   These signals can be written to through a caches_if sent
+		 into the cache_control_interface
   */
   always_comb begin
     if (CPUS == 2) begin
@@ -104,6 +119,7 @@ interface cache_control_if(
       cif0.ccsnoopaddr = ccsnoopaddr;
     end
   end
+
   // controller ports to ram and caches
   modport cc (
             // cache inputs
