@@ -9,9 +9,8 @@
 module caches (
   input logic CLK, nRST,
   datapath_cache_if.cache dcif,
-  cache_control_if.caches ccif
+  caches_if cif
 );
-  parameter CPUID = 0;
 
   // icache
   //icache  ICACHE(dcif, ccif);
@@ -22,17 +21,17 @@ module caches (
   assign dcif.flushed = dcif.halt;
 
   //singlecycle
-  assign dcif.ihit = (dcif.imemREN) ? ~ccif.iwait : 0;
-  assign dcif.dhit = (dcif.dmemREN|dcif.dmemWEN) ? ~ccif.dwait : 0;
-  assign dcif.imemload = ccif.iload;
-  assign dcif.dmemload = ccif.dload;
+  assign dcif.ihit = (dcif.imemREN) ? ~cif.iwait : 0;
+  assign dcif.dhit = (dcif.dmemREN|dcif.dmemWEN) ? ~cif.dwait : 0;
+  assign dcif.imemload = cif.iload;
+  assign dcif.dmemload = cif.dload;
 
 
-  assign ccif.iREN = dcif.imemREN;
-  assign ccif.dREN = dcif.dmemREN;
-  assign ccif.dWEN = dcif.dmemWEN;
-  assign ccif.dstore = dcif.dmemstore;
-  assign ccif.iaddr = dcif.imemaddr;
-  assign ccif.daddr = dcif.dmemaddr;
+  assign cif.iREN = dcif.imemREN;
+  assign cif.dREN = dcif.dmemREN;
+  assign cif.dWEN = dcif.dmemWEN;
+  assign cif.dstore = dcif.dmemstore;
+  assign cif.iaddr = dcif.imemaddr;
+  assign cif.daddr = dcif.dmemaddr;
 
 endmodule
