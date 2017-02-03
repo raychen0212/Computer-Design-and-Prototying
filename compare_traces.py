@@ -98,7 +98,12 @@ if __name__ == '__main__':
   args = parser.parse_args()
   if args.test_name:
     asm_dir = './asmFiles/' + args.test_name + '.asm'
-    asm_file = glob.glob(asm_dir)[0]
+    try:    
+	    asm_file = glob.glob(asm_dir)[0]
+    except IndexError:
+        err_str = 'ERROR: Please provide an existing asm file,'
+        err_str += 'with no extension or leading path'
+        sys.exit(err_str)
     ret = subprocess.call(['asm', asm_file])
     if ret:
       sys.exit('ERROR: ' + asm_file + ' could not be assembled.')
