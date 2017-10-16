@@ -3,6 +3,12 @@
   evillase@gmail.com
 
   all types used to make life easier.
+
+  Shubham Rastogi
+  shubhamrastogi3111995@gmail.com
+
+  cache structs added
+  
 */
 `ifndef CPU_TYPES_PKG_VH
 `define CPU_TYPES_PKG_VH
@@ -152,6 +158,22 @@ package cpu_types_pkg;
     ACCESS,
     ERROR
   } ramstate_t;
+
+// cache frame structs
+  //dcache frame
+  typedef struct packed {
+	logic valid;
+	logic dirty;
+	logic [DTAG_W - 1:0] tag;
+	word_t [1:0] data;
+  } dcache_frame;
+
+  //icache frame  
+  typedef struct packed {
+	logic valid;
+	logic [ITAG_W - 1:0] tag;
+	word_t data;
+  } icache_frame;
 
 endpackage
 `endif //CPU_TYPES_PKG_VH
