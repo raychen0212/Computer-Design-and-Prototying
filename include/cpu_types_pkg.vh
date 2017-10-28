@@ -153,5 +153,21 @@ package cpu_types_pkg;
     ERROR
   } ramstate_t;
 
+// cache frame structs
+  //dcache frame
+  typedef struct packed {
+        logic valid;
+        logic dirty;
+        logic [DTAG_W - 1:0] tag;
+        word_t [1:0] data;
+  } dcache_frame;
+
+  //icache frame
+  typedef struct packed {
+        logic valid;
+        logic [ITAG_W - 1:0] tag;
+        word_t data;
+  } icache_frame;
+
 endpackage
 `endif //CPU_TYPES_PKG_VH
