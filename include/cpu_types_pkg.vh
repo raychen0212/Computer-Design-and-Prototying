@@ -76,8 +76,8 @@ package cpu_types_pkg;
 
   // rtype funct op type
   typedef enum logic [FUNC_W-1:0] {
-    SLLV    = 6'b000100,
-    SRLV    = 6'b000110,
+    SLL     = 6'b000000,
+    SRL     = 6'b000010,
     JR      = 6'b001000,
     ADD     = 6'b100000,
     ADDU    = 6'b100001,
