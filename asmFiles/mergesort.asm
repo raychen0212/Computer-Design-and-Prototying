@@ -7,13 +7,16 @@ org 0x0000
   ori   $sp, $zero, 0xFFFC
   ori   $a0, $zero, data
   lw    $s0, size($zero)
-  srl   $a1, $s0, 1
+  ori   $t1, $0, 1
+  srlv  $a1, $t1, $s0
   or    $s1, $zero, $a0
   or    $s2, $zero, $a1
   jal   insertion_sort
-  srl   $t0, $s0, 1
+  ori   $t1, $0, 1
+  srlv  $t0, $t1, $s0
   subu  $a1, $s0, $t0
-  sll   $t0, $t0, 2
+  ori   $t1, $0, 2
+  sllv  $t0, $t1, $t0
   ori   $a0, $zero, data
   addu  $a0, $a0, $t0
   or    $s3, $zero, $a0
@@ -37,7 +40,8 @@ org 0x0000
 #--------------------------------------
 insertion_sort:
   ori   $t0, $zero, 4
-  sll   $t1, $a1, 2
+  ori   $t2, $0, 2
+  sllv  $t1, $t2, $a1
 is_outer:
   sltu  $at, $t0, $t1
   beq   $at, $zero, is_end
