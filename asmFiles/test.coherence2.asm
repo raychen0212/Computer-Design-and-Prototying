@@ -5,7 +5,8 @@
 org 0x0000
   ori $t0, $0, word1
   lw  $t1, 0($t0)
-  sll $t1, $t1, 16
+  ori $t2, $0, 16
+  sllv $t1, $t2, $t1
   ori $t4, $0, value
   ori $t2, $0, flag
 

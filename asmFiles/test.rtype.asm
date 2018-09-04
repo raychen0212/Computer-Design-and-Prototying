@@ -19,8 +19,10 @@
   subu  $8,$4,$2
   xor   $9,$5,$2
   xori  $10,$1,0xf33f
-  sll   $11,$1,4
-  srl   $12,$1,5
+  ori   $14,$0,4 
+  sllv  $11,$14,$1
+  ori   $14,$0,5
+  srlv  $12,$14,$1
   nor   $13,$1,$2
 # Store them to verify the results
   sw    $13,0($22)

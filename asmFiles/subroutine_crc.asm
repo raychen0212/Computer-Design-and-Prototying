@@ -25,8 +25,10 @@ l1:
   slt $t4, $t2, $t3
   beq $t4, $zero, l2
 
-  srl $t4, $a0, 31
-  sll $a0, $a0, 1
+  ori $t5, $0, 31
+  srlv $t4, $t5, $a0
+  ori $t5, $0, 1
+  sllv $a0, $t5, $a0
   beq $t4, $0, l3
   xor $a0, $a0, $t1
 l3:
