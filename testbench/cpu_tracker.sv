@@ -86,11 +86,11 @@ module cpu_tracker(
       XORI:     $sformat(operands, "%s, %s, %d", dest_str, rs_str, signed'(imm));
       HALT:     $sformat(operands, "");
       // BEQ is a patch until ISS is corrected
-      BEQ:      $sformat(operands, "%s, %s, %d", rt_str, rs_str, branch_addr);
+      BEQ:      $sformat(operands, "%s, %s, %d", rs_str, rt_str, branch_addr);
       BNE:      $sformat(operands, "%s, %s, %d", rs_str, rt_str, branch_addr);
       LUI:      $sformat(operands,"%s, %d", dest_str, lui);
       LW, LL,
-      SW, SC:   $sformat(operands, "%s, %d(%s)", dest_str, signed'(imm), rs_str);
+      SW, SC:   $sformat(operands, "%s, %d(%s)", rt_str, signed'(imm), rs_str);
       J, JAL:   $sformat(operands, "%x", signed'(npc));
     endcase
   end
