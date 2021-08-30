@@ -12,3 +12,8 @@ README
 .deps
 *.hex
 *.ver
+*.qdb
+*.qpg
+*.qtl
+_info
+_vmake
