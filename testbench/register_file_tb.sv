@@ -26,9 +26,9 @@ module register_file_tb;
   always #(PERIOD/2) CLK++;
 
   // interface
-  register_file_if rfif ();
+  register_file_if rfif();
   // test program
-  test PROG ();
+  test PROG (CLK, nRST, rfif);
   // DUT
 `ifndef MAPPED
   register_file DUT(CLK, nRST, rfif);
@@ -48,5 +48,57 @@ module register_file_tb;
 
 endmodule
 
-program test;
+program test
+(
+	input logic CLK, 
+	output logic nRST,
+	register_file_if.tb tbif
+);
+parameter PERIOD = 10;
+initial begin
+	nRST = 0;
+	#(PERIOD)
+//WRITE TO REG 0
+	nRST = 1;
+	tbif.wdat = 32'b10101010;
+	tbif.WEN = 1;
+	tbif.wsel = 0;
+	tbif.rsel1 = 0;
+	tbif.rsel2 = 0;
+	@(posedge CLK);
+	#(PERIOD)
+//Write to reg1 and read for 1
+	tbif.wsel = 1;
+	@(posedge CLK);
+	tbif.rsel1 = 1;
+	tbif.rsel2 = 0;
+	@(posedge CLK);
+	#(PERIOD)
+//Write to reg30 and read for 2
+	tbif.wsel = 30;
+	tbif.rsel1 = 0;
+	tbif.rsel2 = 1;
+	@(posedge CLK);
+	#(PERIOD)
+//Reset
+	nRST = 0;
+	@(posedge CLK);
+	#(PERIOD)
+//WEN test
+	nRST = 1;
+	tbif.wdat = 32'b01010101;
+	tbif.WEN = 0;
+	tbif.wsel = 3;
+	tbif.rsel1 = 3;
+	tbif.rsel2 = 3;
+	@(posedge CLK);
+	#(PERIOD)
+	tbif.WEN = 1;
+	tbif.wsel = 4;
+	tbif.rsel1 = 4;
+	tbif.rsel2 = 4;
+	@(posedge CLK);
+	#(PERIOD)
+$finish;
+end
 endprogram
