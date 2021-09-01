@@ -76,8 +76,8 @@ initial begin
 	#(PERIOD)
 //Write to reg30 and read for 2
 	tbif.wsel = 30;
-	tbif.rsel1 = 0;
-	tbif.rsel2 = 1;
+	tbif.rsel1 = 1;
+	tbif.rsel2 = 30;
 	@(posedge CLK);
 	#(PERIOD)
 //Reset

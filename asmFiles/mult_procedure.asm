@@ -3,9 +3,9 @@ ori $29, $0, 0xFFFC
 ori $28, $0, 0xFFF8
 
 
-	ori $1, $0, 3 #1st oprand
-	ori $2, $0, 4 #2nd operand
-	ori $3, $0, 5 #3rd oprand
+	ori $1, $0, 17 #1st oprand
+	ori $2, $0, 31 #2nd operand
+	ori $3, $0, 23 #3rd oprand
 	ori $4, $0, 6 #4th operand
 
 	push $1 			#push into stack

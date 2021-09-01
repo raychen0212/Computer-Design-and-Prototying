@@ -8,16 +8,18 @@ module alu(
 );
 
 import cpu_types_pkg::*;
+	//if (aluif.OutputPort[31])begin
+		assign aluif.NegFlag = aluif.OutputPort[31]? 1: 0;
+	//end
+	//if (aluif.OutputPort==0)begin
+		assign aluif.ZeroFlag = (aluif.OutputPort==0)? 1:0;
+	//end
 always_comb begin
 	aluif.Overflow = 0;
-	aluif.NegFlag = 0;
-	aluif.ZeroFlag = 0;
-	if (aluif.OutputPort[31])begin
-		aluif.NegFlag = 1;
-	end
-	if (!aluif.OutputPort)begin
-		aluif.ZeroFlag = 1;
-	end
+	//aluif.NegFlag = 0;
+	//aluif.ZeroFlag = 0;
+	//aluif.OutputPort = 0;
+
 	case(aluif.ALUOP)
 
 		ALU_SLL: aluif.OutputPort = aluif.PortA << aluif.PortB;
