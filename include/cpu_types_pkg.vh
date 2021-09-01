@@ -3,6 +3,12 @@
   evillase@gmail.com
 
   all types used to make life easier.
+
+  Shubham Rastogi
+  shubhamrastogi3111995@gmail.com
+
+  cache structs added
+  
 */
 `ifndef CPU_TYPES_PKG_VH
 `define CPU_TYPES_PKG_VH
@@ -70,8 +76,8 @@ package cpu_types_pkg;
 
   // rtype funct op type
   typedef enum logic [FUNC_W-1:0] {
-    SLL     = 6'b000000,
-    SRL     = 6'b000010,
+    SLLV    = 6'b000100,
+    SRLV    = 6'b000110,
     JR      = 6'b001000,
     ADD     = 6'b100000,
     ADDU    = 6'b100001,
@@ -152,6 +158,22 @@ package cpu_types_pkg;
     ACCESS,
     ERROR
   } ramstate_t;
+
+// cache frame structs
+  //dcache frame
+  typedef struct packed {
+	logic valid;
+	logic dirty;
+	logic [DTAG_W - 1:0] tag;
+	word_t [1:0] data;
+  } dcache_frame;
+
+  //icache frame  
+  typedef struct packed {
+	logic valid;
+	logic [ITAG_W - 1:0] tag;
+	word_t data;
+  } icache_frame;
 
 endpackage
 `endif //CPU_TYPES_PKG_VH
