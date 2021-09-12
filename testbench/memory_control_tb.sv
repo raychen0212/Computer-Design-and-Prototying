@@ -18,7 +18,6 @@ module memory_control_tb;
 	caches_if cif1();
   cache_control_if #(.CPUS(1)) ccif(cif0, cif1);
 	cpu_ram_if crif();
-	caches_if cif();
   // test program
   test PROG (CLK, nRST,ccif);
   // DUT
@@ -82,6 +81,7 @@ initial begin
 	#(PERIOD)
 	nRST = 1;
 	#(PERIOD)
+	#(PERIOD)
 	cif0.iaddr = 32'h00000000;
 	cif0.iREN = 0;
 	cif0.dREN = 0;
@@ -89,17 +89,20 @@ initial begin
 	cif0.dstore = 0;
 	cif0.daddr = 32'h00000000;
 	#(PERIOD)
+	#(PERIOD)
 //READ intruction
 	cif0.iREN = 1;
 	cif0.dREN = 0;
 	cif0.dWEN = 0;
 	cif0.iaddr = 32'h00000000;
 	#(PERIOD)
+	#(PERIOD)
 //READ data
 	cif0.iREN = 0;
 	cif0.dREN = 1;
 	cif0.dWEN = 0;
-	cif0.daddr = 32'h000000F0;
+	cif0.daddr = 32'h00000004;
+	#(PERIOD)
 	#(PERIOD)
 //WRITE data
 	cif0.iREN = 0;
@@ -108,20 +111,24 @@ initial begin
 	cif0.daddr = 32'h00000000;
 	cif0.dstore = 32'h11111111;
 	#(PERIOD)
+	#(PERIOD)
 //iREN & dREN conflict
 	cif0.iREN = 1;
 	cif0.dREN = 1;
 	cif0.dWEN = 0;
-	cif0.daddr = 32'h000000F0;
+	cif0.daddr = 32'h00000040;
 	cif0.iaddr = 32'h00000000;
+	#(PERIOD)
 	#(PERIOD)
 //iREN & dWEN conflict
 	cif0.iREN = 1;
 	cif0.dREN = 0;
 	cif0.dWEN = 1;
-	cif0.daddr = 32'h00000000;
+	cif0.daddr = 32'h00000004;
 	cif0.iaddr = 32'h00000000;
 	cif0.dstore = 32'h22222222;
+	#(PERIOD)
+	#(PERIOD)
 	#(PERIOD)
 
 	dump_memory();
@@ -132,9 +139,9 @@ task automatic dump_memory();
     string filename = "memcpu.hex";
     int memfd;
 
-    cif.daddr = 0;
-    cif.dWEN = 0;
-    cif.dREN = 0;
+    cif0.daddr = 0;
+    cif0.dWEN = 0;
+    cif0.dREN = 0;
 
     memfd = $fopen(filename,"w");
     if (memfd)
@@ -148,21 +155,21 @@ task automatic dump_memory();
       bit [7:0][7:0] values;
       string ihex;
 
-      cif.daddr = i << 2;
-      cif.dREN = 1;
+      cif0.daddr = i << 2;
+      cif0.dREN = 1;
       repeat (4) @(posedge CLK);
-      if (cif.dload === 0)
+      if (cif0.dload === 0)
         continue;
-      values = {8'h04,16'(i),8'h00,cif.dload};
+      values = {8'h04,16'(i),8'h00,cif0.dload};
       foreach (values[j])
         chksum += values[j];
       chksum = 16'h100 - chksum;
-      ihex = $sformatf(":04%h00%h%h",16'(i),cif.dload,8'(chksum));
+      ihex = $sformatf(":04%h00%h%h",16'(i),cif0.dload,8'(chksum));
       $fdisplay(memfd,"%s",ihex.toupper());
     end //for
     if (memfd)
     begin
-      cif.dREN = 0;
+      cif0.dREN = 0;
       $fdisplay(memfd,":00000001FF");
       $fclose(memfd);
       $display("Finished memory dump.");
