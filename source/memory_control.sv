@@ -23,9 +23,25 @@ module memory_control (
   parameter CPUS = 1;
 
   //TO RAM
-  assign ccif.ramstore = ccif.dstore;
-  assign ccif.ramWEN = ccif.dWEN;
-  assign ccif.ramREN = ((ccif.dREN || ccif.iREN) && (!ccif.dWEN)) ? 1 : 0;
+  assign ccif.ramstore = ccif.dWEN ? ccif.dstore: 0;
+	always_comb begin
+			ccif.ramWEN = 0;
+			ccif.ramREN = 0;
+		if (ccif.dWEN)begin
+			ccif.ramWEN = 1;
+			ccif.ramREN = 0;
+		end
+		else if(ccif.dREN)begin
+			ccif.ramWEN = 0;
+			ccif.ramREN = 1;
+		end
+		else if(ccif.iREN)begin
+			ccif.ramWEN = 0;
+			ccif.ramREN = 1;
+		end
+	end
+  //assign ccif.ramWEN = ccif.dWEN;
+  //assign ccif.ramREN = ((ccif.dREN || ccif.iREN) && (!ccif.dWEN)) ? 1 : 0;
   assign ccif.ramaddr = (ccif.dWEN || ccif.dREN) ? ccif.daddr : ccif.iaddr;
 
   //TO CACHE

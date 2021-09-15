@@ -1,0 +1,126 @@
+processing file asmFiles/branch_test.asm (1 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:46:38 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 520 time and ran for         25 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:46:38 on Sep 14,2021, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+11 instructions
+--- memsim.hex	2021-09-14 02:46:39.058282415 -0400
++++ memcpu.hex	2021-09-14 02:46:38.981279507 -0400
+@@ -1,6 +1,6 @@
+ :0400000034010000C7
+-:0400010000000005F6
+-:0400020000000006F4
++:0400010000000002F9
++:0400020000000004F6
+ :0400030034040006BB
+ :0400040010220003C3
+ :04000500AC02000445
+processing file asmFiles/count_days.asm (2 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:46:40 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all

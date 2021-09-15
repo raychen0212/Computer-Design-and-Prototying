@@ -22,9 +22,9 @@ always_comb begin
 
 	case(aluif.ALUOP)
 
-		ALU_SLL: aluif.OutputPort = aluif.PortA << aluif.PortB;
+		ALU_SLL: aluif.OutputPort = aluif.PortB << aluif.PortA[4:0];
 
-		ALU_SRL: aluif.OutputPort = aluif.PortA >> aluif.PortB;
+		ALU_SRL: aluif.OutputPort = aluif.PortB >> aluif.PortA[4:0];
 
 		ALU_ADD: begin 
 			aluif.OutputPort = $signed(aluif.PortA) + $signed(aluif.PortB);
@@ -44,7 +44,7 @@ always_comb begin
 
 		ALU_XOR: aluif.OutputPort = aluif.PortA ^ aluif.PortB;
 
-		ALU_NOR: aluif.OutputPort = !(aluif.PortA | aluif.PortB);
+		ALU_NOR: aluif.OutputPort = ~(aluif.PortA | aluif.PortB);
 
 		ALU_SLT: aluif.OutputPort = ($signed(aluif.PortA) < $signed(aluif.PortB))? 1:0;
 

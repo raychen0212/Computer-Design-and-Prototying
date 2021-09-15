@@ -1,0 +1,986 @@
+processing file asmFiles/branch_test.asm (1 of 9)
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/alu.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:12 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/alu.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface register_file_if
+-- Importing package cpu_types_pkg
+-- Compiling interface alu_if
+-- Compiling module alu
+
+Top level modules:
+	alu
+End time: 02:47:13 on Sep 14,2021, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/alu_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:13 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/alu_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface alu_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:13 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/cache_control_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:13 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/cache_control_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface caches_if
+-- Importing package cpu_types_pkg
+-- Compiling interface cache_control_if
+
+Top level modules:
+	--none--
+End time: 02:47:13 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/caches.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:13 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/caches.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface datapath_cache_if
+-- Importing package cpu_types_pkg
+-- Compiling interface caches_if
+-- Compiling module caches
+
+Top level modules:
+	caches
+End time: 02:47:14 on Sep 14,2021, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/caches_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:14 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/caches_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface caches_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:14 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/control_unit.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:14 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/control_unit.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface register_file_if
+-- Importing package cpu_types_pkg
+-- Compiling interface control_unit_if
+-- Compiling module control_unit
+
+Top level modules:
+	control_unit
+End time: 02:47:14 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/control_unit_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:14 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/control_unit_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface control_unit_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:15 on Sep 14,2021, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/cpu_ram_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:15 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/cpu_ram_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface cpu_ram_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:15 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/cpu_types_pkg.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:15 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/cpu_types_pkg.vh 
+-- Compiling package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:15 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/datapath.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:15 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/datapath.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface datapath_cache_if
+-- Importing package cpu_types_pkg
+-- Compiling interface control_unit_if
+-- Compiling interface request_unit_if
+-- Compiling interface alu_if
+-- Compiling interface register_file_if
+-- Compiling module datapath
+
+Top level modules:
+	datapath
+End time: 02:47:15 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/datapath_cache_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:16 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/datapath_cache_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface datapath_cache_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:16 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/memory_control.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:16 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/memory_control.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface caches_if
+-- Importing package cpu_types_pkg
+-- Compiling interface cache_control_if
+-- Compiling module memory_control
+
+Top level modules:
+	memory_control
+End time: 02:47:16 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/ram.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:16 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/ram.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface cpu_ram_if
+-- Importing package cpu_types_pkg
+-- Compiling module ram
+
+Top level modules:
+	ram
+End time: 02:47:16 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/register_file.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:16 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/register_file.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface register_file_if
+-- Importing package cpu_types_pkg
+-- Compiling package register_file_sv_unit
+-- Importing package cpu_types_pkg
+-- Compiling module register_file
+
+Top level modules:
+	register_file
+End time: 02:47:17 on Sep 14,2021, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/register_file_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:17 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/register_file_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface register_file_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:17 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/request_unit.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:17 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/request_unit.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface register_file_if
+-- Importing package cpu_types_pkg
+-- Compiling interface request_unit_if
+-- Compiling module request_unit
+
+Top level modules:
+	request_unit
+End time: 02:47:17 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/request_unit_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:17 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/request_unit_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface request_unit_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:18 on Sep 14,2021, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/singlecycle.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:18 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/singlecycle.sv 
+-- Compiling module singlecycle
+
+Top level modules:
+	singlecycle
+End time: 02:47:18 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  source/system.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:18 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 source/system.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface system_if
+-- Importing package cpu_types_pkg
+-- Compiling module system
+
+Top level modules:
+	system
+End time: 02:47:18 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  include/system_if.vh
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:18 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 include/system_if.vh 
+-- Compiling package cpu_types_pkg
+-- Compiling interface system_if
+-- Importing package cpu_types_pkg
+
+Top level modules:
+	--none--
+End time: 02:47:18 on Sep 14,2021, Elapsed time: 0:00:00
+Errors: 0, Warnings: 0
+vlog  +acc -sv12compat -mfcu -lint +incdir+include -suppress 12110  testbench/system_tb.sv
+QuestaSim vlog 10.7a Compiler 2018.03 Mar 26 2018
+Start time: 02:47:18 on Sep 14,2021
+vlog "+acc" -sv12compat -mfcu -lint "+incdir+include" -suppress 12110 testbench/system_tb.sv 
+-- Compiling package cpu_types_pkg
+-- Compiling interface system_if
+-- Importing package cpu_types_pkg
+-- Compiling module system_tb
+-- Compiling program test
+
+Top level modules:
+	system_tb
+End time: 02:47:19 on Sep 14,2021, Elapsed time: 0:00:01
+Errors: 0, Warnings: 0
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:20 on Sep 14,2021
+# ** Note: (vsim-3812) Design is being optimized...
+###### include/cache_control_if.vh(79):       iREN[1] = cif1.iREN;
+# ** Warning: include/cache_control_if.vh(79): (vopt-2576) [BSOB] - Bit-select into 'iREN' is out of bounds.
+###### include/cache_control_if.vh(80):       dREN[1] = cif1.dREN;
+# ** Warning: include/cache_control_if.vh(80): (vopt-2576) [BSOB] - Bit-select into 'dREN' is out of bounds.
+###### include/cache_control_if.vh(81):       dWEN[1] = cif1.dWEN;
+# ** Warning: include/cache_control_if.vh(81): (vopt-2576) [BSOB] - Bit-select into 'dWEN' is out of bounds.
+###### include/cache_control_if.vh(82):       dstore[1] = cif1.dstore;
+# ** Warning: include/cache_control_if.vh(82): (vopt-2696) Element index 1 into 'dstore' is out of bounds.
+# ** Warning: include/cache_control_if.vh(82): (vopt-2696) Element index 1 into 'dstore' is out of bounds.
+###### include/cache_control_if.vh(83):       iaddr[1] = cif1.iaddr;
+# ** Warning: include/cache_control_if.vh(83): (vopt-2696) Element index 1 into 'iaddr' is out of bounds.
+# ** Warning: include/cache_control_if.vh(83): (vopt-2696) Element index 1 into 'iaddr' is out of bounds.
+###### include/cache_control_if.vh(84):       daddr[1] = cif1.daddr;
+# ** Warning: include/cache_control_if.vh(84): (vopt-2696) Element index 1 into 'daddr' is out of bounds.
+# ** Warning: include/cache_control_if.vh(84): (vopt-2696) Element index 1 into 'daddr' is out of bounds.
+###### include/cache_control_if.vh(85):       ccwrite[1] = cif1.ccwrite;
+# ** Warning: include/cache_control_if.vh(85): (vopt-2576) [BSOB] - Bit-select into 'ccwrite' is out of bounds.
+###### include/cache_control_if.vh(86):       cctrans[1] = cif1.cctrans;
+# ** Warning: include/cache_control_if.vh(86): (vopt-2576) [BSOB] - Bit-select into 'cctrans' is out of bounds.
+###### include/cache_control_if.vh(95):       cif1.iwait = iwait[1];
+# ** Warning: include/cache_control_if.vh(95): (vopt-2576) [BSOB] - Bit-select into 'iwait' is out of bounds.
+###### include/cache_control_if.vh(96):       cif1.dwait = dwait[1];
+# ** Warning: include/cache_control_if.vh(96): (vopt-2576) [BSOB] - Bit-select into 'dwait' is out of bounds.
+###### include/cache_control_if.vh(99):       cif1.ccwait = ccwait[1];
+# ** Warning: include/cache_control_if.vh(99): (vopt-2576) [BSOB] - Bit-select into 'ccwait' is out of bounds.
+###### include/cache_control_if.vh(100):       cif1.ccinv = ccinv[1];
+# ** Warning: include/cache_control_if.vh(100): (vopt-2576) [BSOB] - Bit-select into 'ccinv' is out of bounds.
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 520 time and ran for         25 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:47:23 on Sep 14,2021, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 15
+11 instructions
+--- memsim.hex	2021-09-14 02:47:23.520960860 -0400
++++ memcpu.hex	2021-09-14 02:47:23.436957687 -0400
+@@ -1,6 +1,6 @@
+ :0400000034010000C7
+-:0400010000000005F6
+-:0400020000000006F4
++:04000100FFFFFFFB03
++:04000200FFFFFFFA03
+ :0400030034040006BB
+ :0400040010220003C3
+ :04000500AC02000445
+processing file asmFiles/count_days.asm (2 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:24 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 6640 time and ran for        331 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:47:25 on Sep 14,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+156 instructions
+--- memsim.hex	2021-09-14 02:47:25.872049612 -0400
++++ memcpu.hex	2021-09-14 02:47:25.808047196 -0400
+@@ -35,7 +35,7 @@
+ :0400220027BDFFFCFB
+ :04002300AFA7000083
+ :0400240003E00008ED
+-:043FFD0000000015AB
+-:043FFE0000001DF1B1
+-:043FFF00000000D2EC
++:043FFD00FFFFFFEBD8
++:043FFE00FFFFE20FD0
++:043FFF00FFFFFF2E93
+ :00000001FF
+processing file asmFiles/halt_test.asm (3 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:27 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 360 time and ran for         17 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:47:28 on Sep 14,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+7 instructions
+--- memsim.hex	2021-09-14 02:47:28.190137119 -0400
++++ memcpu.hex	2021-09-14 02:47:28.128134778 -0400
+@@ -1,6 +1,6 @@
+ :0400000034010001C6
+-:0400010000000003F8
+-:0400020000000004F6
++:04000100FFFFFFFD01
++:04000200FFFFFFFC01
+ :0400030034040004BD
+ :04000400AC03000445
+ :04000500AC0400083F
+processing file asmFiles/jump_test.asm (4 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:29 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 480 time and ran for         23 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:47:30 on Sep 14,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+10 instructions
+--- memsim.hex	2021-09-14 02:47:30.564226740 -0400
++++ memcpu.hex	2021-09-14 02:47:30.481223606 -0400
+@@ -1,6 +1,6 @@
+ :0400000034010001C6
+-:0400010000000002F9
+-:0400020000000003F7
++:04000100FFFFFFFE00
++:04000200FFFFFFFD00
+ :0400030008000005EC
+ :0400040034030001C0
+ :040005000041102284
+processing file asmFiles/mergesort.asm (5 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:31 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 26120 time and ran for       1305 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:47:32 on Sep 14,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+5404 instructions
+--- memsim.hex	2021-09-14 02:47:32.871313831 -0400
++++ memcpu.hex	2021-09-14 02:47:32.805311339 -0400
+@@ -1,4 +1,4 @@
+-:04000000341EFFFCAF
++:04000000FFFFFB0003
+ :04000100341DFFFCAF
+ :0400020034040304BB
+ :040003008C1003005A
+@@ -81,133 +81,68 @@
+ :040050000800004A5A
+ :0400510003E00008C0
+ :0400C00000000040FC
+-:0400C100000000013A
+-:0400C2000000000337
+-:0400C3000000000435
+-:0400C4000000000731
+-:0400C5000000000B2C
+-:0400C6000000000C2A
+-:0400C7000000001520
+-:0400C800000000161E
+-:0400C900000000161D
+-:0400CA000000001919
+-:0400CB000000001B16
+-:0400CC000000001D13
+-:0400CD00000000200F
+-:0400CE00000000210D
+-:0400CF000000002904
+-:0400D00000000033F9
+-:0400D10000000036F5
+-:0400D20000000038F2
+-:0400D3000000003DEC
+-:0400D4000000003DEB
+-:0400D5000000003EE9
+-:0400D60000000042E4
+-:0400D70000000047DE
+-:0400D8000000004BD9
+-:0400D9000000004DD6
+-:0400DA0000000050D2
+-:0400DB0000000051D0
+-:0400DC0000000051CF
+-:0400DD0000000053CC
+-:0400DE000000005AC4
+-:0400DF0000000063BA
+-:0400E00000000064B8
+-:0400E1000000000714
+-:0400E2000000000713
+-:0400E3000000000712
+-:0400E4000000000810
+-:0400E500000000080F
+-:0400E600000000080E
+-:0400E700000000090C
+-:0400E8000000000A0A
+-:0400E9000000000F04
+-:0400EA000000001002
+-:0400EB000000001100
+-:0400EC0000000017F9
+-:0400ED000000001AF5
+-:0400EE0000000020EE
+-:0400EF0000000020ED
+-:0400F00000000023E9
+-:0400F10000000024E7
+-:0400F20000000026E4
+-:0400F30000000026E3
+-:0400F40000000028E0
+-:0400F5000000002FD8
+-:0400F60000000030D6
+-:0400F70000000032D3
+-:0400F80000000041C3
+-:0400F90000000042C1
+-:0400FA0000000043BF
+-:0400FB0000000044BD
+-:0400FC0000000059A7
+-:0400FD000000005BA4
+-:0400FE000000005CA2
+-:0400FF000000005CA1
+-:040100000000006497
+-:0401400000000001BA
+-:0401410000000003B7
+-:0401420000000004B5
+-:0401430000000007B1
+-:0401440000000007B0
+-:0401450000000007AF
+-:0401460000000007AE
+-:0401470000000008AC
+-:0401480000000008AB
+-:0401490000000008AA
+-:04014A0000000009A8
+-:04014B000000000AA6
+-:04014C000000000BA4
+-:04014D000000000CA2
+-:04014E000000000F9E
+-:04014F00000000109C
+-:04015000000000119A
+-:040151000000001595
+-:040152000000001693
+-:040153000000001692
+-:040154000000001790
+-:04015500000000198D
+-:040156000000001A8B
+-:040157000000001B89
+-:040158000000001D86
+-:040159000000002082
+-:04015A000000002081
+-:04015B000000002080
+-:04015C00000000217E
+-:04015D00000000237B
+-:04015E000000002479
+-:04015F000000002676
+-:040160000000002675
+-:040161000000002872
+-:040162000000002970
+-:040163000000002F69
+-:040164000000003067
+-:040165000000003264
+-:040166000000003362
+-:04016700000000365E
+-:04016800000000385B
+-:040169000000003D55
+-:04016A000000003D54
+-:04016B000000003E52
+-:04016C00000000414E
+-:04016D00000000424C
+-:04016E00000000424B
+-:04016F000000004349
+-:040170000000004447
+-:040171000000004743
+-:040172000000004B3E
+-:040173000000004D3B
+-:040174000000005037
+-:040175000000005135
+-:040176000000005134
+-:040177000000005331
+-:04017800000000592A
+-:040179000000005A28
+-:04017A000000005B26
+-:04017B000000005C24
+-:04017C000000005C23
+-:04017D00000000631B
+-:04017E000000006419
+-:04017F000000006418
+-:043FFE0000000500BA
++:0400C1000000005AE1
++:0400C20000000051E9
++:0400C3000000003306
++:0400C400000000191F
++:0400C50000000050E7
++:0400C600000000290D
++:0400C700000000161F
++:0400C800000000151F
++:0400C9000000000C27
++:0400CA000000003EF4
++:0400CB000000004BE6
++:0400CC0000000047E9
++:0400CD0000000053DC
++:0400CE0000000051DD
++:0400CF000000004DE0
++:0400D0000000001616
++:0400D1000000000B20
++:0400D2000000001D0D
++:0400D3000000000722
++:0400D4000000002107
++:0400D50000000063C4
++:0400D6000000001B0B
++:0400D70000000064C1
++:0400D80000000042E2
++:0400D9000000003DE6
++:0400DA000000002002
++:0400DB000000000120
++:0400DC0000000036EA
++:0400DD00000000041B
++:0400DE000000003DE1
++:0400DF0000000038E5
++:0400E0000000000319
++:0400E10000000030EB
++:0400E2000000000812
++:0400E30000000042D7
++:0400E40000000064B4
++:0400E5000000000F08
++:0400E6000000005CBA
++:0400E70000000041D4
++:0400E80000000020F4
++:0400E900000000090A
++:0400EA000000002FE3
++:0400EB0000000059B8
++:0400EC0000000011FF
++:0400ED000000000708
++:0400EE0000000023EB
++:0400EF0000000044C9
++:0400F00000000020EC
++:0400F1000000000A01
++:0400F2000000000703
++:0400F30000000017F2
++:0400F4000000005CAC
++:0400F5000000005BAC
++:0400F60000000028DE
++:0400F7000000001AEB
++:0400F80000000008FC
++:0400F90000000024DF
++:0400FA0000000026DC
++:0400FB0000000008F9
++:0400FC0000000026DA
++:0400FD0000000010EF
++:0400FE0000000032CC
++:0400FF0000000007F6
++:0401000000000043B8
+ :00000001FF
+processing file asmFiles/mult.asm (6 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:34 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all
+# Starting Processor.
+# Halted at 1640 time and ran for         81 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 02:47:35 on Sep 14,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+35 instructions
+--- memsim.hex	2021-09-14 02:47:35.356407642 -0400
++++ memcpu.hex	2021-09-14 02:47:35.303405641 -0400
+@@ -1,4 +1,4 @@
+-:04000000341DFFFCB0
++:04000000FFFFFFF40B
+ :0400010034010003C3
+ :0400020034020004C0
+ :0400030027BDFFFC1A
+@@ -20,6 +20,5 @@
+ :040013008FA10000B9
+ :0400140027BD000400
+ :04001500FFFFFFFFEB
+-:043FFD0000000004BC
+-:043FFE000000000CB3
++:043FFF00FFFFFFFCC5
+ :00000001FF
+processing file asmFiles/mult_procedure.asm (7 of 9)
+Reading pref.tcl
+
+# 10.7a
+
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 02:47:36 on Sep 14,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.singlecycle(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.caches(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# run -all

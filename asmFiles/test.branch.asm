@@ -10,7 +10,7 @@ test:
 taken:
 
 	bne $3, $2, taken   #not taken
-	sw  $4, 0x40($0)
+	sw  $4, 0x8($0)
 	bne $1, $2, end			#taken
   j test
 end:
