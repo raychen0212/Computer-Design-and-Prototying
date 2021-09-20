@@ -51,8 +51,9 @@ module system (input logic CLK, nRST, system_if.sys syif);
   //multicore   #(.PC0('h0), .PC1('h200)) CPU (CLK, nRST, halt, prif);
 
   // memory
-  ram                                   RAM (CLK, nRST, prif);
+  ram                                  RAM (CLK, nRST, prif);
   //sdram                                 RAM (CLK, nRST, prif);
+  //#(.LAT(0)) 
 
   // interface connections
   assign syif.halt = halt;
