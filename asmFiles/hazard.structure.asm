@@ -4,10 +4,12 @@ ori $2, $0, 0xF000
 ori $4, $0, 100
 ori $29, $0, 0xFFFC
 
-lw  $3, 0($1)
+lw  $3, 0($1)//load hazard
 add $4, $3, $4
-sub $5, $4, $1
-addi $5, $5, 0xFFF0
-sw $5, 4($2)
+nop
+nop
+nop
+nop
+sw $5, 4($4)
 
 HALT

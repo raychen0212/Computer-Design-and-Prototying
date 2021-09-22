@@ -14,5 +14,12 @@ add $4, $1, $2
 and $5, $3, $2
 or  $6, $1, $3
 sw $4, 4($2)
+j jumping //jump hazard
+add $4, $2, $2
+and $4, $1, $2
+
+jumping:
+add $6, $1, $2
+sw $4, 8($6)
 
 HALT

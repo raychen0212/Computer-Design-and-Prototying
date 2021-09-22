@@ -180,6 +180,9 @@ always_comb begin : IF_ID_CONNECTION
 	ifidif.pc4_i   = pc4;
 	ifidif.flush = 0;
 	ifidif.en = 1;
+	//cputracker only
+	ifidif.pc_i <= pc;
+    ifidif.next_pc_i <= next_pc;
 end
 ///////////////////////////////////////////////////////////////
 
@@ -205,6 +208,14 @@ always_comb begin : ID_EX_CONNECTION
 	idexif.ExtOp_i = cuif.ExtOp;
 	idexif.ALUOp_i = cuif.ALUOp;
 	idexif.stopread_i = cuif.stopread;
+	//cputracker only
+	idexif.pc_i = ifidif.pc_o;
+	idexif.next_pc_i = ifidif.next_pc_o;
+	idexif.instr_i = ifidif.instr_o;
+	idexif.lui_imm_i = cuif.imm;
+	idexif.funct_i = cuif.funct;
+	idexif.opcode_i = cuif.opcode;
+	idexif.wdat_i = wdat;
 end
 //////////////////////////////////////////////////////////////
 
@@ -227,6 +238,16 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.MemToReg_i = idexif.MemToReg_o;
 	exmemif.PCsrc_i	= idexif.PCsrc_o;
 	exmemif.stopread_i = idexif.stopread_o;
+	//cputracker only
+	exmemif.pc_i = idexif.pc_o;
+	exmemif.next_pc_i = idexif.next_pc_o;
+	exmemif.instr_i = idexif.instr_o;
+	exmemif.lui_imm_i = idexif.lui_imm_o;
+	exmemif.funct_i = idexif.funct_o;
+	exmemif.opcode_i = idexif.opcode_o;
+	exmemif.rs_i = idexif.rs_o;
+	exmemif.rt_i = idexif.rt_o;
+	exmemif.wdat_i = idexif.wdat_o;
 end 
 ////////////////////////////////////////////////////////////////
 
@@ -243,6 +264,18 @@ always_comb begin: MEM_WB_CONNECTION
 	memwbif.halt_i  = exmemif.halt_o;
 	memwbif.MemToReg_i = exmemif.MemToReg_o;
 	memwbif.stopread_i = exmemif.stopread_o;
+	//cputracker only
+	memwbif.pc_i = exmemif.pc_o;
+    memwbif.next_pc_i = exmemif.next_pc_o;
+    memwbif.instr_i = exmemif.instr_o;
+    memwbif.lui_imm_i = exmemif.lui_imm_o;
+    memwbif.funct_i = exmemif.funct_o;
+    memwbif.opcode_i = exmemif.opcode_o;
+    memwbif.rs_i = exmemif.rs_o;
+    memwbif.rt_i = exmemif.rt_o;
+    memwbif.branchaddr_i = exmemif.branchaddr_o;
+    memwbif.rdat2_i = exmemif.rdat2_o;
+	memwbif.wdat_i = exmemif.wdat_o;
 end
 /////////////////////////////////////////////////////////////
 
