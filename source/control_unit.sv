@@ -77,18 +77,12 @@ always_comb begin
 	BEQ:begin
 					cuif.ALUOp = ALU_SUB;
 					cuif.RegWr = 0;
-					if(cuif.equal)
-						cuif.PCsrc = 2'b10; //branch
-					else
-						cuif.PCsrc = 2'b00; //pc = pc+4
+					cuif.PCsrc = 2'b10; //branch
 			end
 	BNE:begin
 					cuif.ALUOp = ALU_SUB;
 					cuif.RegWr = 0;
-					if(!cuif.equal)
-						cuif.PCsrc = 2'b10; //branch
-					else
-						cuif.PCsrc = 2'b00; //pc = pc+4
+					cuif.PCsrc = 2'b10; //branch
 			end
 	LUI:begin
 					cuif.ALUOp		 = ALU_OR;
