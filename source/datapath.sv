@@ -58,6 +58,8 @@ word_t pc, next_pc, pc4, jumpaddr;
 logic pcen;
 //logic [2:0] PCSrc;
 assign pcen = (dpif.ihit & !dpif.dhit)? 1:0;
+
+
 always_ff@(posedge CLK, negedge nRST)begin
 	if(!nRST)
 		pc = 0;
@@ -67,7 +69,7 @@ end
 
 assign pc4 = pc + 4;
 //assign branchaddr = pc4 + (imm << 2);
-assign jumpaddr = {pc4[31:28], exmemif.jaddr, 2'b00};
+assign jumpaddr = {pc4[31:28], exmemif.jaddr_o, 2'b00};
 //assign cuif.equal = aluif.ZeroFlag ;//&& (cuif.ALUOp == ALU_SUB); //equal flag for branch determination
 
 always_comb begin
@@ -93,12 +95,12 @@ assign dpif.imemaddr = pc;
 /////////////////////////Sign/Zero extend BLOCK////////////
 always_comb begin
 	imm =0;
-  if (cuif.ExtOp == 2'b0)
-		imm = {16'h0000, cuif.imm}; //zero extend
-	else if(cuif.ExtOp == 2'b1)
-    imm = 32'($signed(cuif.imm)); //sign extend
-	else if(cuif.ExtOp == 2'b10)	
-    imm = {cuif.imm, 16'h0000};		//LUI
+  if (idexif.ExtOp_o == 2'b0)
+		imm = {16'h0000, idexif.imm_o}; //zero extend
+	else if(idexif.ExtOp_o == 2'b1)
+    imm = 32'($signed(idexif.imm_o)); //sign extend
+	else if(idexif.ExtOp_o == 2'b10)	
+    imm = {idexif.imm_o, 16'h0000};		//LUI
 end
 ///////////////////////////////////////////////////////////
 
@@ -118,20 +120,23 @@ end
 
 //////////////////////Register File logic///////////////////
 assign dpif.dmemstore = exmemif.rdat2_o;
-assign cuif.instr = ifidif.imemload_o;
-assign rfif.WEN = (dpif.ihit || dpif.dhit)? (memwbif.RegWr_o? 1 : 0): 0;
+//assign cuif.instr =  ifidif.instr_o;
+assign cuif.instr =  memwbif.stopread_o? 0: ifidif.instr_o;
+//assign rfif.WEN = (dpif.ihit || dpif.dhit)? (memwbif.RegWr_o? 1 : 0): 0;
+assign rfif.WEN = memwbif.RegWr_o;
 assign rfif.rsel1 = cuif.rs;
 assign rfif.rsel2 = cuif.rt;
 assign rfif.wdat = wdat;
+assign rfif.wsel = memwbif.wsel_o;
 
 always_comb begin
-	memwbif.wsel_i = 0;
-	if (idexif.RegDst == 2'b0)
-		memwbif.wsel = idexif.rd_o;
-	else if (idexif.RegDst == 2'b1)
-		memwbif.wsel = idexif.rt_o;
-	else if (idexif.RegDst == 2'b10)
-		memwbif.wsel = 31;								//JAL
+	exmemif.wsel_i = 0;
+	if (idexif.RegDst_o == 2'b0)
+		exmemif.wsel_i = idexif.rd_o;
+	else if (idexif.RegDst_o == 2'b1)
+		exmemif.wsel_i = idexif.rt_o;
+	else if (idexif.RegDst_o == 2'b10)
+		exmemif.wsel_i = 31;								//JAL
 end 
 ////////////////////////////////////////////////////////////
 
@@ -143,7 +148,9 @@ always_comb begin
   else if (memwbif.MemToReg_o == 2'b1)
     wdat = memwbif.dmemload_o;							//lw
   else if (memwbif.MemToReg_o == 2'b10)
-    wdat = memwb.pc4_o;												//JAL
+    wdat = memwbif.pc4_o;												//JAL
+  else if (memwbif.MemToReg_o == 2'b11)
+    wdat = memwbif.imm_o;//lui
 end
 
 ////////////////////////////////////////////////////////////
@@ -153,8 +160,8 @@ assign ruif.ihit    = dpif.ihit;
 assign ruif.dhit    = dpif.dhit;
 assign ruif.dREN    = idexif.dREN_o;
 assign ruif.dWEN    = idexif.dWEN_o;
-assign dpif.dmemREN  = ruif.dmemREN;
-assign dpif.dmemWEN  = ruif.dmemWEN;
+assign dpif.dmemREN  = exmemif.dREN_o;
+assign dpif.dmemWEN  = exmemif.dWEN_o;
 assign dpif.imemREN  = dpif.halt? 0: 1;
 ////////////////////////////////////////////////////////////
 
@@ -182,7 +189,7 @@ always_comb begin : ID_EX_CONNECTION
 	idexif.en    = 1;
 	idexif.rdat1_i = rfif.rdat1;
 	idexif.rdat2_i = rfif.rdat2;
-	idexif.imm_i   = imm;
+	idexif.imm_i   = cuif.imm;
 	idexif.pc4_i   = ifidif.pc4_o;
 	idexif.jaddr_i = cuif.addr;
 	idexif.rt_i    = cuif.rt;
@@ -195,8 +202,10 @@ always_comb begin : ID_EX_CONNECTION
 	idexif.RegDst_i= cuif.RegDst;
 	idexif.MemToReg_i = cuif.MemToReg;
 	idexif.PCsrc_i = cuif.PCsrc;
+	idexif.ExtOp_i = cuif.ExtOp;
 	idexif.ALUOp_i = cuif.ALUOp;
-
+	idexif.stopread_i = cuif.stopread;
+end
 //////////////////////////////////////////////////////////////
 
 ////////////////EX-MEM///////////////////////////////////////
@@ -204,7 +213,7 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.flush = 0;
 	exmemif.en    = 1;
 	exmemif.rdat2_i = idexif.rdat2_o;
-	exmemif.imm_i	= idexif.imm_o;
+	exmemif.imm_i	= imm;
 	exmemif.pc4_i	= idexif.pc4_o;
 	exmemif.jaddr_i = idexif.jaddr_o;
 	exmemif.branchaddr_i = idexif.pc4_o + (idexif.imm_o << 2);
@@ -217,6 +226,7 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.ZeroFlag_i = aluif.ZeroFlag;
 	exmemif.MemToReg_i = idexif.MemToReg_o;
 	exmemif.PCsrc_i	= idexif.PCsrc_o;
+	exmemif.stopread_i = idexif.stopread_o;
 end 
 ////////////////////////////////////////////////////////////////
 
@@ -227,11 +237,12 @@ always_comb begin: MEM_WB_CONNECTION
 	memwbif.imm_i	= exmemif.imm_o;
 	memwbif.pc4_i	= exmemif.pc4_o;
 	memwbif.OutputPort_i = exmemif.OutputPort_o;
-	memwbif.dmemload_i = dpif.dememload;
+	memwbif.dmemload_i = dpif.dmemload;
 	memwbif.wsel_i	= exmemif.wsel_o;
 	memwbif.RegWr_i = exmemif.RegWr_o;
 	memwbif.halt_i  = exmemif.halt_o;
 	memwbif.MemToReg_i = exmemif.MemToReg_o;
+	memwbif.stopread_i = exmemif.stopread_o;
 end
 /////////////////////////////////////////////////////////////
 

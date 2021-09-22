@@ -7,6 +7,7 @@
   lui   $10, 0xFEED
   ori   $1, $zero, 0x0F00
   ori   $2, $zero, 0x0800
+  nop
   ori   $10, $10, 0xBEEF
   nop
   lw    $3,0($1)

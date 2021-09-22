@@ -11,6 +11,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
             memwbif.halt_o = '0;
             memwbif.MemToReg_o = '0;
             //memwbif.PCsrc_o = '0;
+            memwbif.stopread_o = '0;
         end
         else begin
             if(memwbif.flush == 1)begin
@@ -23,6 +24,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
                 memwbif.halt_o = '0;
                 memwbif.MemToReg_o = '0;
                 //memwbif.PCsrc_o = '0;
+                memwbif.stopread_o = '0;
             end
             else if(memwbif.en == 1)begin
                 memwbif.imm_o = memwbif.imm_i;
@@ -34,6 +36,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
                 memwbif.halt_o = memwbif.halt_i;
                 memwbif.MemToReg_o = memwbif.MemToReg_i;
                 //memwbif.PCsrc_o = memwbif.PCsrc_i;
+                memwbif.stopread_o = memwbif.stopread_i;
             end
             else begin
                 memwbif.imm_o = memwbif.imm_o;
@@ -45,6 +48,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
                 memwbif.halt_o = memwbif.halt_o;
                 memwbif.MemToReg_o = memwbif.MemToReg_o;
                 //memwbif.PCsrc_o = memwbif.PCsrc_o;
+                memwbif.stopread_o = memwbif.stopread_o;
             end
         end
     end

@@ -17,6 +17,7 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
             exmemif.ZeroFlag_o = '0;
             exmemif.MemToReg_o = '0;
             exmemif.PCsrc_o = '0;
+            exmemif.stopread_o = '0;
         end
         else begin
             if(exmemif.flush == 1)begin
@@ -34,6 +35,7 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
                 exmemif.ZeroFlag_o = '0;
                 exmemif.MemToReg_o = '0;
                 exmemif.PCsrc_o = '0;
+                exmemif.stopread_o = '0;
             end
             else if(exmemif.en == 1)begin
                 exmemif.rdat2_o = exmemif.rdat2_i;
@@ -50,6 +52,7 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
                 exmemif.ZeroFlag_o = exmemif.ZeroFlag_i;
                 exmemif.MemToReg_o = exmemif.MemToReg_i;
                 exmemif.PCsrc_o = exmemif.PCsrc_i;
+                exmemif.stopread_o = exmemif.stopread_i;
             end
             else begin
                 exmemif.rdat2_o = exmemif.rdat2_o;
@@ -66,6 +69,7 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
                 exmemif.ZeroFlag_o = exmemif.ZeroFlag_o;
                 exmemif.MemToReg_o = exmemif.MemToReg_o;
                 exmemif.PCsrc_o = exmemif.PCsrc_o;
+                exmemif.stopread_o = exmemif.stopread_o;
             end
         end
     end

@@ -1,5 +1,7 @@
 `include "id_ex_if.vh"
-module if_id (input logic CLK, input logic nRST, id_ex_if.idex idexif);
+`include "control_unit_if.vh"
+module id_ex (input logic CLK, input logic nRST, id_ex_if.idex idexif);
+import cpu_types_pkg::*;
     always_ff @( posedge CLK, negedge nRST ) begin : ID_EX_PIPELINE
         if(!nRST)begin
             idexif.rdat1_o = '0;
@@ -12,14 +14,15 @@ module if_id (input logic CLK, input logic nRST, id_ex_if.idex idexif);
             idexif.rt_o = '0;
             idexif.RegWr_o = '0;
             idexif.halt_o = '0;
-            idexif.ALU_src_o = '0;
+            idexif.ALUsrc_o = '0;
             idexif.dREN_o = '0;
             idexif.dWEN_o = '0;
             idexif.RegDst_o = '0;
             idexif.MemToReg_o = '0;
-            idexif.PCsrc = '0;
-            idexif.ALUOp_o = '0;
-
+            idexif.PCsrc_o = '0;
+            idexif.ExtOp_o = '0;
+            idexif.ALUOp_o = ALU_SLL;
+            idexif.stopread_o = '0;
         end
         else begin
             if (ifidif.flush == 1)begin
@@ -33,13 +36,15 @@ module if_id (input logic CLK, input logic nRST, id_ex_if.idex idexif);
                 idexif.rt_o = '0;
                 idexif.RegWr_o = '0;
                 idexif.halt_o = '0;
-                idexif.ALU_src_o = '0;
+                idexif.ALUsrc_o = '0;
                 idexif.dREN_o = '0;
                 idexif.dWEN_o = '0;
                 idexif.RegDst_o = '0;
                 idexif.MemToReg_o = '0;
-                idexif.PCsrc = '0;
-                idexif.ALUOp_o = '0;            
+                idexif.PCsrc_o = '0;
+                idexif.ExtOp_o = '0;
+                idexif.ALUOp_o = ALU_SLL;   
+                idexif.stopread_o = '0;         
             end
             else if(ifidif.en == 1)begin
                 idexif.rdat1_o = idexif.rdat1_i;
@@ -58,7 +63,9 @@ module if_id (input logic CLK, input logic nRST, id_ex_if.idex idexif);
                 idexif.RegDst_o = idexif.RegDst_i;
                 idexif.MemToReg_o = idexif.MemToReg_i;
                 idexif.PCsrc_o = idexif.PCsrc_i;
-                idexif.ALUOp_o = idexif.ALUOp_i;        
+                idexif.ExtOp_o = idexif.ExtOp_i;
+                idexif.ALUOp_o = idexif.ALUOp_i;   
+                idexif.stopread_o = idexif.stopread_i;     
             end
             else begin
                 idexif.rdat1_o = idexif.rdat1_o;
@@ -77,7 +84,9 @@ module if_id (input logic CLK, input logic nRST, id_ex_if.idex idexif);
                 idexif.RegDst_o = idexif.RegDst_o;
                 idexif.MemToReg_o = idexif.MemToReg_o;
                 idexif.PCsrc_o = idexif.PCsrc_o;
-                idexif.ALUOp_o = idexif.ALUOp_o;    
+                idexif.ExtOp_o = idexif.ExtOp_o;
+                idexif.ALUOp_o = idexif.ALUOp_o; 
+                idexif.stopread_o = idexif.stopread_o;   
             end
         end
     end
