@@ -14,12 +14,12 @@ huif.exmem_flush = 0;
 
 if((huif.idex_wsel == huif.ifid_rs || huif.idex_wsel == huif.ifid_rt )&& huif.idex_wsel != 0 && !huif.idex_dWEN)begin //exmem conflict with idex
     huif.ifid_en = 0;
-   huif.idex_en = 0;
+   //huif.idex_en = 0;
    huif.idex_flush = 1;
 end
 else if ((huif.exmem_wsel == huif.ifid_rs || huif.exmem_wsel == huif.ifid_rt)&& huif.exmem_wsel != 0 && !huif.idex_dWEN)begin //exmem conflict with ifid
    huif.ifid_en = 0; 
-    huif.idex_en = 0;
+    //huif.idex_en = 0;
     huif.idex_flush = 1;
 end
 /*else if ((huif.memwb_wsel == huif.ifid_rs || huif.memwb_wsel == huif.ifid_rt)&& huif.exmem_wsel != 0 && !huif.idex_dWEN)begin //exmem conflict with ifid
@@ -28,7 +28,7 @@ end*/
 //lui
 else if((huif.memwb_wsel == huif.ifid_rs || huif.memwb_wsel == huif.ifid_rt )&& huif.memwb_wsel != 0 && !huif.idex_dWEN)begin
     huif.ifid_en = 0;
-    huif.idex_en = 0;
+    //huif.idex_en = 0;
     huif.idex_flush = 1;
 end
 
