@@ -16,6 +16,7 @@
 `include "id_ex_if.vh"
 `include "ex_mem_if.vh"
 `include "mem_wb_if.vh"
+`include "hazard_unit_if.vh"
 
 // alu op, mips op, and instruction type
 `include "cpu_types_pkg.vh"
@@ -39,6 +40,7 @@ module datapath (
 	id_ex_if		idexif();
 	ex_mem_if		exmemif();
 	mem_wb_if		memwbif();
+	hazard_unit_if  huif();
 
 //modules initial
 	control_unit  cu(cuif);
@@ -49,15 +51,17 @@ module datapath (
 	id_ex 		  ie(CLK, nRST, idexif);
 	ex_mem 		  em(CLK, nRST, exmemif);
 	mem_wb 		  mw(CLK, nRST, memwbif);
+	hazard_unit   hu(huif);
 
 //Global varibles initial
 	word_t imm, wdat;
+	logic[1:0] check;
 
 /////////////////////////PC BLOCK//////////////////////////
 word_t pc, next_pc, pc4, jumpaddr;
 logic pcen;
 //logic [2:0] PCSrc;
-assign pcen = (dpif.ihit & !dpif.dhit)? 1:0;
+assign pcen = (dpif.ihit & !dpif.dhit & ifidif.en)? 1:0;
 
 
 always_ff@(posedge CLK, negedge nRST)begin
@@ -78,8 +82,9 @@ always_comb begin
 		next_pc = pc4;
 	else if (exmemif.PCsrc_o == 2'b1)
 		next_pc = jumpaddr;
-	else if (exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o)
+	else if ((exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o) || (exmemif.PCsrc_o == 3'b110 && !exmemif.ZeroFlag_o))
 		next_pc = exmemif.branchaddr_o;
+		//next_pc = idexif.pc4_o + (idexif.imm_o << 2);
 	else if (exmemif.PCsrc_o == 2'b11)
 		next_pc = idexif.rdat1_o;
 	else 
@@ -95,12 +100,25 @@ assign dpif.imemaddr = pc;
 /////////////////////////Sign/Zero extend BLOCK////////////
 always_comb begin
 	imm =0;
-  if (idexif.ExtOp_o == 2'b0)
+	check = 0;
+  	if (idexif.ExtOp_o == 2'b0)begin
 		imm = {16'h0000, idexif.imm_o}; //zero extend
-	else if(idexif.ExtOp_o == 2'b1)
-    imm = 32'($signed(idexif.imm_o)); //sign extend
-	else if(idexif.ExtOp_o == 2'b10)	
-    imm = {idexif.imm_o, 16'h0000};		//LUI
+		check = 2'b01;
+	  end
+	else if(idexif.ExtOp_o == 2'b1)begin
+		if(idexif.imm_o[15] == 1'b1)begin
+			imm = {16'hffff, idexif.imm_o[15:0]};
+			check = 2'b10;
+		end
+		else if(idexif.imm_o[15] == 1'b0)begin
+			imm = {16'h0000, idexif.imm_o[15:0]};
+			check = 2'b11;
+		end
+	end
+    //imm = 32'($signed(idexif.imm_o)); //sign extend
+	else if(idexif.ExtOp_o == 2'b10)	begin
+		imm = {idexif.imm_o, 16'h0000};		//LUI
+	end
 end
 ///////////////////////////////////////////////////////////
 
@@ -114,7 +132,7 @@ always_comb begin
 	if(idexif.ALUsrc_o == 0)
 		aluif.PortB = idexif.rdat2_o;
 	else if (idexif.ALUsrc_o == 1)
-		aluif.PortB = idexif.imm_o;
+		aluif.PortB = imm;
 end
 ////////////////////////////////////////////////////////////
 
@@ -131,12 +149,26 @@ assign rfif.wsel = memwbif.wsel_o;
 
 always_comb begin
 	exmemif.wsel_i = 0;
-	if (idexif.RegDst_o == 2'b0)
+	huif.idex_wsel = 0;
+	if (idexif.RegDst_o == 2'b0)begin
 		exmemif.wsel_i = idexif.rd_o;
-	else if (idexif.RegDst_o == 2'b1)
+		if(idexif.PCsrc_o == 2'b10 || idexif.PCsrc_o == 3'b110)begin
+		huif.idex_wsel = 0;
+		end
+		else begin 
+			huif.idex_wsel = idexif.rd_o;
+		end
+	end
+	else if (idexif.RegDst_o == 2'b1)begin
 		exmemif.wsel_i = idexif.rt_o;
-	else if (idexif.RegDst_o == 2'b10)
-		exmemif.wsel_i = 31;								//JAL
+		huif.idex_wsel = idexif.rt_o;
+		
+	end
+	else if (idexif.RegDst_o == 2'b10)begin
+		exmemif.wsel_i = 31;	
+		huif.idex_wsel = 31;			
+	end					//JAL
+	
 end 
 ////////////////////////////////////////////////////////////
 
@@ -174,12 +206,22 @@ always_ff @(posedge CLK, negedge nRST) begin
 end
 ////////////////////////////////////////////////////////////////
 
+////////////////Hazard_unit//////////////////////////////////
+assign huif.exmem_wsel = exmemif.wsel_o;
+assign huif.ifid_rs = cuif.rs;
+assign huif.ifid_rt = cuif.rt;
+assign huif.exmem_PCSrc = exmemif.PCsrc_o; 
+//assign huif.memwb_MemToReg = memwbif.MemToReg_o;
+assign huif.memwb_wsel = memwbif.wsel_o;
+assign huif.exmem_ZeroFlag = exmemif.ZeroFlag_o;
+assign huif.idex_dWEN = idexif.dWEN_o;
+	
 ////////////////////IF-ID//////////////////////////////////////
 always_comb begin : IF_ID_CONNECTION
 	ifidif.instr_i = dpif.imemload;
 	ifidif.pc4_i   = pc4;
-	ifidif.flush = 0;
-	ifidif.en = 1;
+	ifidif.flush = huif.ifid_flush;
+	ifidif.en = huif.ifid_en;
 	//cputracker only
 	ifidif.pc_i <= pc;
     ifidif.next_pc_i <= next_pc;
@@ -188,11 +230,11 @@ end
 
 ///////////////////ID-EX/////////////////////////////////////
 always_comb begin : ID_EX_CONNECTION
-	idexif.flush = 0;
-	idexif.en    = 1;
+	idexif.flush = huif.idex_flush;
+	idexif.en    = huif.idex_en;
 	idexif.rdat1_i = rfif.rdat1;
-	idexif.rdat2_i = rfif.rdat2;
-	idexif.imm_i   = cuif.imm;
+    idexif.rdat2_i = rfif.rdat2;
+    idexif.imm_i = cuif.imm;
 	idexif.pc4_i   = ifidif.pc4_o;
 	idexif.jaddr_i = cuif.addr;
 	idexif.rt_i    = cuif.rt;
@@ -221,7 +263,7 @@ end
 
 ////////////////EX-MEM///////////////////////////////////////
 always_comb begin : EX_MEM_CONNECTION
-	exmemif.flush = 0;
+	exmemif.flush = huif.exmem_flush;
 	exmemif.en    = 1;
 	exmemif.rdat2_i = idexif.rdat2_o;
 	exmemif.imm_i	= imm;
@@ -248,6 +290,7 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.rs_i = idexif.rs_o;
 	exmemif.rt_i = idexif.rt_o;
 	exmemif.wdat_i = idexif.wdat_o;
+	exmemif.rd_i = idexif.rd_o; 
 end 
 ////////////////////////////////////////////////////////////////
 
@@ -276,6 +319,7 @@ always_comb begin: MEM_WB_CONNECTION
     memwbif.branchaddr_i = exmemif.branchaddr_o;
     memwbif.rdat2_i = exmemif.rdat2_o;
 	memwbif.wdat_i = exmemif.wdat_o;
+	memwbif.rd_i = exmemif.rd_o;
 end
 /////////////////////////////////////////////////////////////
 

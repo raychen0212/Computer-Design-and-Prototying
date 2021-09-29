@@ -82,7 +82,7 @@ always_comb begin
 	BNE:begin
 					cuif.ALUOp = ALU_SUB;
 					cuif.RegWr = 0;
-					cuif.PCsrc = 2'b10; //branch
+					cuif.PCsrc = 3'b110; //branch
 			end
 	LUI:begin
 					cuif.ALUOp		 = ALU_OR;

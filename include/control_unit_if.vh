@@ -17,7 +17,7 @@ interface control_unit_if;
 
 //Controls
 	logic RegWr, halt, ALUsrc, iREN, dREN, dWEN, branch, jump, stopread;
-	logic [1:0] RegDst, PCsrc, ExtOp, MemToReg;
+	logic [2:0] RegDst, PCsrc, ExtOp, MemToReg;
 	aluop_t ALUOp;
 	
 	modport tb(

@@ -64,16 +64,16 @@ add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rsel2
 add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/wdat
 add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rdat1
 add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rdat2
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramREN
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramWEN
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramaddr
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramstore
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramload
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramstate
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/memREN
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/memWEN
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/memaddr
-add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/memstore
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramREN
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramWEN
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramaddr
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramstore
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramload
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramstate
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memREN
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memWEN
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memaddr
+add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memstore
 add wave -noupdate -expand /system_tb/DUT/CPU/DP/rf/reg_map
 add wave -noupdate -expand -group {memory control} /system_tb/DUT/CPU/ccif/cif0/iwait
 add wave -noupdate -expand -group {memory control} /system_tb/DUT/CPU/ccif/cif0/dwait
@@ -186,8 +186,17 @@ add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/MemToReg_i
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/MemToReg_o
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/flush
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/en
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_en
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_flush
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/idex_flush
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/idex_wsel
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/exmem_wsel
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/memwb_wsel
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_rs
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_rt
+add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/exmem_PCSrc
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {527032 ps} 0}
+WaveRestoreCursors {{Cursor 1} {136104 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 138
 configure wave -valuecolwidth 100
@@ -203,4 +212,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1311047657 ps} {1311713282 ps}
+WaveRestoreZoom {0 ps} {665625 ps}

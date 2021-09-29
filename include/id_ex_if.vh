@@ -15,7 +15,7 @@ interface id_ex_if;
 	logic RegWr_i, halt_i, ALUsrc_i, dREN_i, dWEN_i, stopread_i,
 		  RegWr_o, halt_o, ALUsrc_o, dREN_o, dWEN_o ,stopread_o;
 
-	logic [1:0] RegDst_i,  MemToReg_i, PCsrc_i, ExtOp_i, 
+	logic [2:0] RegDst_i,  MemToReg_i, PCsrc_i, ExtOp_i, 
 				RegDst_o,  MemToReg_o, PCsrc_o, ExtOp_o;
 
 	aluop_t ALUOp_i, ALUOp_o;
