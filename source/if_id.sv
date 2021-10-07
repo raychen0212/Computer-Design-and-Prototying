@@ -1,6 +1,6 @@
 `include "if_id_if.vh"
 module if_id (input logic CLK, input logic nRST, if_id_if.ifid ifidif);
-    always_ff @( posedge CLK, negedge nRST ) begin : IF_ID_PIPELINE
+    always_ff @(posedge CLK, negedge nRST ) begin : IF_ID_PIPELINE
         if(!nRST)begin
             ifidif.instr_o <= '0;
             ifidif.pc4_o <= '0;

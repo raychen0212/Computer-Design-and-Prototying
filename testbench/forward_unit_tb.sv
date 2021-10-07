@@ -1,10 +1,10 @@
 // mapped needs this
-`include "hazard_unit_if.vh"
+`include "forward_unit_if.vh"
 
 // mapped timing needs this. 1ns is too fast
 `timescale 1 ns / 1 ns
 
-module hazard_unit_tb;
+module forward_unit_tb;
 
   import cpu_types_pkg::*;  
   parameter PERIOD = 10;
@@ -15,12 +15,12 @@ module hazard_unit_tb;
   always #(PERIOD/2) CLK++;
 
   // interface
-  hazard_unit_if huif ();
+  forward_unit_if fuif ();
   // test program
-  test PROG (CLK, huif);
+  test PROG (CLK, fuif);
   // DUT
 `ifndef MAPPED
-  hazard_unit DUT(huif);
+  forward_unit DUT(fuif);
 `endif
 
 endmodule

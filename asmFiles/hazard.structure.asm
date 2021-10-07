@@ -6,10 +6,6 @@ ori $29, $0, 0xFFFC
 
 lw  $3, 0($1)//load hazard
 add $4, $3, $4
-nop
-nop
-nop
-nop
 sw $5, 4($4)
 
 HALT

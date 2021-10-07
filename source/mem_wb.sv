@@ -25,7 +25,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
             memwbif.rdat2_o <= '0;
             memwbif.wdat_o = 0;
             memwbif.rd_o <= '0;
-
+            memwbif.dREN_o <= 0;
         end
         else begin
             if(memwbif.flush == 1)begin
@@ -51,6 +51,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
                 memwbif.rdat2_o <= '0;
                 memwbif.wdat_o = 0;
                 memwbif.rd_o <= '0;
+                memwbif.dREN_o <= 0;
             end
             else if(memwbif.en == 1)begin
                 memwbif.imm_o = memwbif.imm_i;
@@ -75,6 +76,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
                 memwbif.rdat2_o <= memwbif.rdat2_i;
                 memwbif.wdat_o = memwbif.wdat_i;
                 memwbif.rd_o <= memwbif.rd_i;
+                memwbif.dREN_o <= memwbif.dREN_i;
             end
             else begin
                 memwbif.imm_o = memwbif.imm_o;
@@ -99,6 +101,7 @@ module mem_wb (input logic CLK, input logic nRST, mem_wb_if.memwb memwbif);
                 memwbif.rdat2_o <= memwbif.rdat2_o;
                 memwbif.wdat_o = memwbif.wdat_o;
                 memwbif.rd_o <= memwbif.rd_o;
+                memwbif.dREN_o <= memwbif.dREN_o;
             end
         end
     end

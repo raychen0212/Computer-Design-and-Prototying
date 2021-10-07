@@ -13,7 +13,7 @@ module register_file
 word_t [31:0] reg_map ;
 
 
-always_ff@(posedge CLK, negedge nRST)begin
+always_ff@(negedge CLK, negedge nRST)begin
   if(!nRST)begin
     reg_map <= '0;
   end
