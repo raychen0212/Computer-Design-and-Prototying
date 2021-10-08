@@ -25,54 +25,71 @@ module forward_unit_tb;
 
 endmodule
 
-program test(input logic CLK, hazard_unit_if.tb testing);
+program test(input logic CLK, forward_unit_if.tb testing);
   initial begin
-    testing.idex_wsel = 2'b11;
-    testing.ifid_rs = 2'b11;
-    testing.ifid_rt = 2'b10;
-    testing.idex_dREN = '0;
-    @(negedge CLK)
-    if(testing.ifid_en == 0 && testing.idex_flush == 1)begin
-      $display("Pass 1");
-    end
-    else begin
-      $display("Fail 1");
-    end
-    @(negedge CLK)
-    testing.exmem_wsel = 2'b11;
-    testing.ifid_rs = 2'b01;
-    testing.ifid_rt = 2'b11;
-    testing.idex_dREN = '0;
-    @(negedge CLK)
-    if(testing.ifid_en == 0 && testing.idex_flush == 1)begin
-      $display("Pass 2");
-    end
-    else begin
-      $display("Fail 2");
-    end
-    @(negedge CLK)
+    testing.memwb_RegWr = 1;
     testing.memwb_wsel = 2'b11;
-    testing.ifid_rs = 2'b01;
-    testing.ifid_rt = 2'b11;
-    testing.idex_dREN = '0;
+    testing.idex_rs = 2'b11;
+    testing.idex_rt = 2'b10;
+    testing.exmem_RegWr = 1;
+    testing.exmem_wsel = 2'b11;
+    
+    
     @(negedge CLK)
-    if(testing.ifid_en == 0 && testing.idex_flush == 1)begin
-      $display("Pass 3");
+    if(testing.forward_1 == 2 && testing.forward_2 == 0)begin
+      $display("Pass setting forward 1 to fetch exmem output port data and forward 2 get the normal data.");
     end
     else begin
-      $display("Fail 3");
+      $display("Fail setting forward 1 to fetch exmem output port data and forward 2 get the normal data.");
+    end
+    @(negedge CLK)
+    testing.memwb_RegWr = 1;
+    testing.memwb_wsel = 2'b10;
+    testing.idex_rs = 2'b11;
+    testing.idex_rt = 2'b10;
+    testing.exmem_RegWr = 1;
+    testing.exmem_wsel = 2'b11;
+    
+    
+    @(negedge CLK)
+    if(testing.forward_2 == 1 && testing.forward_1 == 2)begin
+      $display("Pass setting forward 1 to fetch exmem output port data and forward 2 fetch memwb output data.");
+    end
+    else begin
+      $display("Fail setting forward 1 to fetch exmem output port data and forward 2 fetch memwb output data.");
+    end
+    @(negedge CLK)
+    testing.memwb_RegWr = 1;
+    testing.memwb_wsel = 2'b10;
+    testing.idex_rs = 2'b11;
+    testing.idex_rt = 2'b10;
+    testing.exmem_RegWr = 1;
+    testing.exmem_wsel = 2'b10;
+    
+    
+    @(negedge CLK)
+    if(testing.forward_1 == 0 && testing.forward_2 == 2)begin
+      $display("Pass setting forward 1 to fetch normal data and forward 2 fetch exmem output data.");
+    end
+    else begin
+      $display("Fail setting forward 1 to fetch normal data and forward 2 fetch exmem output data.");
     end
 
     @(negedge CLK)
-    testing.exmem_PCSrc = 2'b01;
-    testing.exmem_ZeroFlag = 1'b1;
+    testing.memwb_RegWr = 1;
+    testing.memwb_wsel = 2'b11;
+    testing.idex_rs = 2'b11;
+    testing.idex_rt = 2'b10;
+    testing.exmem_RegWr = 1;
+    testing.exmem_wsel = 2'b10;
+    
+    
     @(negedge CLK)
-    if(testing.ifid_flush == 1 && testing.idex_flush == 1 && testing.exmem_flush == 1)begin
-      $display("Pass 4");
+    if(testing.forward_1 == 1 && testing.forward_2 == 2)begin
+      $display("Pass setting forward 1 to fetch memwb output data and forward 2 fetch exmem output data.");
     end
     else begin
-      $display("Fail 4");
+      $display("Fail setting forward 1 to fetch memwb output data and forward 2 fetch exmem output data.");
     end
-
   end
 endprogram

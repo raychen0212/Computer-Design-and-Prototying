@@ -20,6 +20,7 @@ if((huif.exmem_dREN || huif.exmem_dWEN) && !huif.dhit)begin //exmem conflict wit
    huif.exmem_en = 0;
    huif.memwb_flush = 1;
 end
+
 /*
 if((huif.idex_wsel == huif.ifid_rs || huif.idex_wsel == huif.ifid_rt)&& huif.idex_wsel != 0 && huif.idex_dREN)begin //exmem conflict with idex
    huif.ifid_en = 0;

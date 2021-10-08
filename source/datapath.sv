@@ -64,7 +64,10 @@ module datapath (
 word_t pc, next_pc, pc4, jumpaddr;
 logic pcen;
 //logic [2:0] PCSrc;
-assign pcen = ((dpif.ihit & !dpif.dhit & ifidif.en) || exmemif.PCsrc_o)? 1:0;
+assign pcen = ((dpif.ihit & !dpif.dhit & ifidif.en) 
+ || (exmemif.PCsrc_o == 2'b1)
+ || ((exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o) || (exmemif.PCsrc_o == 3'b110 && !exmemif.ZeroFlag_o)) 
+ || (exmemif.PCsrc_o == 2'b11))? 1:0;
 
 
 always_ff@(posedge CLK, negedge nRST)begin
