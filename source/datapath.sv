@@ -68,7 +68,7 @@ always_comb begin
 	else if (cuif.PCsrc == 2'b11)
 		next_pc = rfif.rdat1;
 	else 
-		next_pc = pc;
+		next_pc = pc4;
 end
 
 	//PC addr to mem
