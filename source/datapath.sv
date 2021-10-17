@@ -82,11 +82,19 @@ always_comb begin
 	imm =0;
   if (cuif.ExtOp == 2'b0)
 		imm = {16'h0000, cuif.imm}; //zero extend
-	else if(cuif.ExtOp == 2'b1)
-    imm = 32'($signed(cuif.imm)); //sign extend
+	else if(cuif.ExtOp == 2'b1)begin
+		if(cuif.imm[15] == 1'b1)begin
+			imm = {16'hffff, cuif.imm[15:0]};
+		end
+		else if(cuif.imm[15] == 1'b0)begin
+			imm = {16'h0000, cuif.imm[15:0]};
+		end
+	end
+    //imm = 32'($signed(cuif.imm)); //sign extend
 	else if(cuif.ExtOp == 2'b10)	
     imm = {cuif.imm, 16'h0000};		//LUI
 end
+
 ///////////////////////////////////////////////////////////
 
 /////////////////////////ALU logic////////////////////
