@@ -1,0 +1,332 @@
+`include "datapath_cache_if.vh"
+`include "cache_control_if.vh"
+`include "cpu_types_pkg.vh"
+import cpu_types_pkg::*;
+
+module dcache (input logic CLK, nRST, datapath_cache_if.dcache dpif, caches_if.dcache cif);
+
+//16 bits per block
+//total = 1024 bits
+//two way associative, two words per block
+//data = 32 bits
+//tag = 25 bits
+//index = 3 bits
+//blockoffset = 2 bits
+typedef struct packed {
+	dcache_frame left;
+    dcache_frame right;
+} twoway_dcache;
+
+logic [25:0] left_tag, right_tag;
+logic left_dirty, right_dirty, left_valid, right_valid;
+word_t left_data0, left_data1, right_data0, right_data1;
+
+dcachef_t dcache_addr;
+twoway_dcache [7:0]frame; // has 8 rows
+
+typedef enum logic [3:0] {ACCESS, WB0, WB1, MEM0, MEM1, FLUSH_CNT, FLUSH0, FLUSH1, HCTR} State;
+State state,  next_state; 
+
+logic recent[7:0], next_recent[7:0]; //0 for left, 1 for right
+word_t hit_counter, next_hit_counter; 
+logic [4:0] flush_count, next_flush_count;
+
+assign dcache_addr = dcachef_t'(dpif.dmemaddr);
+
+always_ff @( posedge CLK, negedge nRST ) begin : dcache_ff
+    if(nRST == 0)begin
+        state <= ACCESS;
+        for (int i = 0; i < 8; i = i + 1)begin
+            frame[i] <= '0;
+            recent[i] <= 0;
+        end
+        hit_counter <= 0;
+        flush_count <= 0;
+    end
+    else begin
+        state <= next_state;
+        frame[dcache_addr.idx].left.valid <= left_valid;
+        frame[dcache_addr.idx].left.dirty <= left_dirty;
+        frame[dcache_addr.idx].left.tag <= left_tag;
+        frame[dcache_addr.idx].left.data[0] <= left_data0;
+        frame[dcache_addr.idx].left.data[1] <= left_data1;
+
+        frame[dcache_addr.idx].right.valid <= right_valid;
+        frame[dcache_addr.idx].right.dirty <= right_dirty;
+        frame[dcache_addr.idx].right.tag <= right_tag;
+        frame[dcache_addr.idx].right.data[0] <= right_data0;
+        frame[dcache_addr.idx].right.data[1] <= right_data1;
+
+        hit_counter <= next_hit_counter;
+        flush_count <= next_flush_count;
+        for (int i = 0; i < 8; i = i + 1)begin
+            recent[i] <= next_recent[i];
+        end
+    end
+end
+
+always_comb begin
+    next_state = state;
+    next_flush_count = flush_count;
+    next_hit_counter = hit_counter;
+    for (int i = 0; i < 8; i = i + 1)begin
+        next_recent[i] = recent[i];
+    end
+    left_valid = frame[dcache_addr.idx].left.valid;
+    left_dirty = frame[dcache_addr.idx].left.dirty;
+    left_tag = frame[dcache_addr.idx].left.tag;
+    left_data0 = frame[dcache_addr.idx].left.data[0];
+    left_data1 = frame[dcache_addr.idx].left.data[1];
+
+    right_valid = frame[dcache_addr.idx].right.valid;
+    right_dirty = frame[dcache_addr.idx].right.dirty;
+    right_tag = frame[dcache_addr.idx].right.tag;
+    right_data0 = frame[dcache_addr.idx].right.data[0];
+    right_data1 = frame[dcache_addr.idx].right.data[1];
+    dpif.dhit = 0;
+    case(state)
+        ACCESS:begin
+            if (dpif.dmemREN)begin //read hit
+                    if((dcache_addr.tag == frame[dcache_addr.idx].left.tag) && frame[dcache_addr.idx].left.valid)begin
+                        dpif.dhit = 1;
+                        if (dcache_addr.blkoff == 1)begin
+                            dpif.dmemload = frame[dcache_addr.idx].left.data[1];                
+                        end
+                        else if (dcache_addr.blkoff == 0)begin
+                            dpif.dmemload = frame[dcache_addr.idx].left.data[0];                
+                        end
+                        next_hit_counter = hit_counter + 1;
+                        next_recent[dcache_addr.idx] = 0;
+                    end 
+                    else if ((dcache_addr.tag == frame[dcache_addr.idx].right.tag) && frame[dcache_addr.idx].right.valid)begin
+                        dpif.dhit = 1;
+                        if (dcache_addr.blkoff == 1)begin
+                            dpif.dmemload = frame[dcache_addr.idx].right.data[1];                
+                        end
+                        else if (dcache_addr.blkoff == 0)begin
+                            dpif.dmemload = frame[dcache_addr.idx].right.data[0];                
+                        end
+                        next_hit_counter = hit_counter + 1;
+                        next_recent[dcache_addr.idx] = 1;
+                    end 
+                    else begin //miss logic
+                next_hit_counter = hit_counter - 1;
+                if (recent[dcache_addr.idx] == 0)begin//left recent
+                    if(frame[dcache_addr.idx].right.dirty)begin
+                        next_state = WB0;
+                    end
+                    else begin
+                        next_state = MEM0;
+                    end
+                end
+                else if (recent[dcache_addr.idx] == 1)begin//right recent
+                    if(frame[dcache_addr.idx].left.dirty)begin
+                        next_state = WB0;
+                    end
+                    else begin
+                        next_state = MEM0;
+                    end
+                end
+            end
+            end
+
+            else if (dpif.dmemWEN)begin //write hit
+                if(dcache_addr.tag == frame[dcache_addr.idx].left.tag)begin
+                    dpif.dhit = 1;
+                    left_dirty = 1;
+                    if (dcache_addr.blkoff == 1)begin
+                        left_data1 = dpif.dmemstore;               
+                    end
+                    else if (dcache_addr.blkoff == 0)begin
+                        left_data0 = dpif.dmemstore;                
+                    end
+                    next_hit_counter = hit_counter + 1;
+                    next_recent[dcache_addr.idx] = 0;
+                end 
+                else if (dcache_addr.tag == frame[dcache_addr.idx].right.tag)begin
+                    dpif.dhit = 1;
+                    right_dirty = 1;
+                    if (dcache_addr.blkoff == 1)begin
+                        right_data1 = dpif.dmemstore;               
+                    end
+                    else if (dcache_addr.blkoff == 0)begin
+                        right_data0 = dpif.dmemstore;                
+                    end
+                    next_hit_counter = hit_counter + 1;
+                    next_recent[dcache_addr.idx] = 1;
+                end
+
+                else begin //miss logic
+                next_hit_counter = hit_counter - 1;
+                if (recent[dcache_addr.idx] == 0)begin//left recent
+                    if(frame[dcache_addr.idx].right.dirty)begin
+                        next_state = WB0;                    end
+                    else begin
+                        next_state = MEM0;
+                    end
+                end
+                else if (recent[dcache_addr.idx] == 1)begin//right recent
+                    if(frame[dcache_addr.idx].left.dirty)begin
+                        next_state = WB0;
+                    end
+                    else begin
+                        next_state = MEM0;
+                    end
+                end
+            end
+
+            end
+
+            /*else begin //miss logic
+                next_hit_counter = hit_counter - 1;
+                if (recent[dcache_addr.idx] == 0)begin//left recent
+                    if(frame[dcache_addr.idx].right.dirty)begin
+                        next_state = WB0;
+                        test = 0;
+                    end
+                    else begin
+                        next_state = MEM0;
+                        test = 1;
+                    end
+                end
+                else if (recent[dcache_addr.idx] == 1)begin//right recent
+                    if(frame[dcache_addr.idx].left.dirty)begin
+                        next_state = WB0;
+                        test = 2;
+                    end
+                    else begin
+                        next_state = MEM0;
+                        test = 3;
+                    end
+                end
+            end*/
+            if (dpif.halt)begin //flush
+                next_state = FLUSH_CNT;
+            end
+        end
+        
+        WB0:begin
+            if (recent[dcache_addr.idx] == 0)begin//left
+                cif.daddr = {frame[dcache_addr.idx].left.tag, dcache_addr.idx,1'b0,2'b00};
+                cif.dstore = frame[dcache_addr.idx].left.data[0];
+            end
+            else if(recent[dcache_addr.idx] == 1)begin//right
+                cif.daddr = {frame[dcache_addr.idx].right.tag, dcache_addr.idx,1'b0,2'b00};
+                cif.dstore = frame[dcache_addr.idx].right.data[0];
+            end
+            if (~cif.dwait)begin//next state logic        HALT:begin
+                next_state = WB1;
+            end
+            cif.dWEN = 1;
+        end
+
+        WB1:begin
+            if (recent[dcache_addr.idx] == 0)begin//left
+                cif.daddr = {frame[dcache_addr.idx].left.tag, dcache_addr.idx,1'b1,2'b00};
+                cif.dstore = frame[dcache_addr.idx].left.data[1];
+            end
+            else if(recent[dcache_addr.idx] == 1)begin//right
+                cif.daddr = {frame[dcache_addr.idx].right.tag, dcache_addr.idx,1'b1,2'b00};
+                cif.dstore = frame[dcache_addr.idx].right.data[1];
+            end
+            if (~cif.dwait)begin//next state logic
+                next_state = MEM0;
+            end
+            cif.dWEN = 1;
+        end
+
+        MEM0:begin
+            cif.daddr = {dcache_addr.tag, dcache_addr.idx, 1'b0,2'b00};
+            if (recent[dcache_addr.idx] == 1)begin//left
+                left_data0 = cif.dload;
+                
+            end
+            else if(recent[dcache_addr.idx] == 0)begin//right
+                right_data0 = cif.dload;
+                
+            end
+            if (~cif.dwait)begin//next state logic
+                next_state = MEM1;
+            end
+            cif.dREN = 1;
+        end
+
+        MEM1:begin
+            cif.daddr = {dcache_addr.tag, dcache_addr.idx, 1'b1,2'b00};
+            if (recent[dcache_addr.idx] == 1)begin//left
+                left_data1 = cif.dload;
+                left_tag = dcache_addr.tag;
+                left_dirty = 0;
+                left_valid = 1;
+                next_recent[dcache_addr.idx] = 0;
+            end
+            else if(recent[dcache_addr.idx] == 0)begin//right
+                right_data1 = cif.dload;
+                right_tag = dcache_addr.tag;
+                right_dirty = 0;
+                right_valid = 1;
+                next_recent[dcache_addr.idx] = 1;
+            end
+            if (~cif.dwait)begin//next state logic
+                next_state = ACCESS;
+            end
+            cif.dREN = 1;
+        end
+
+        FLUSH_CNT:begin
+            if (flush_count < 16)begin
+                if (frame[flush_count].left.dirty | frame[flush_count].right.dirty)begin
+                    next_state = FLUSH0;
+                end
+                else begin
+                    next_state = FLUSH_CNT;
+                end
+                next_flush_count = flush_count + 1;
+            end
+
+            if (flush_count == 16)begin
+                next_state = HCTR;
+            end
+        end
+
+        FLUSH0:begin
+            if (flush_count < 8)begin
+                cif.daddr = {frame[flush_count].left.tag, flush_count,1'b1,2'b00};
+                cif.dstore = frame[flush_count].left.data[0];
+            end
+            else if (flush_count > 7)begin
+                cif.daddr = {frame[flush_count].right.tag, flush_count,1'b1,2'b00};
+                cif.dstore = frame[flush_count].right.data[0];
+            end
+            if (~cif.dwait)begin//next state logic
+                next_state = FLUSH1;
+            end
+            cif.dWEN = 1;
+        end
+
+        FLUSH1:begin
+            if (flush_count < 8)begin
+                cif.daddr = {frame[flush_count].left.tag, flush_count,1'b1,2'b00};
+                cif.dstore = frame[flush_count].left.data[1];
+            end
+            else if (flush_count > 7)begin
+                cif.daddr = {frame[flush_count].right.tag, flush_count,1'b1,2'b00};
+                cif.dstore = frame[flush_count].right.data[1];
+            end
+            if (~cif.dwait)begin//next state logic
+                next_state = FLUSH_CNT;
+            end
+            cif.dWEN = 1;
+        end
+
+        HCTR:begin
+            cif.dWEN = 1;
+            cif.daddr = 32'h3100;
+            cif.dstore = hit_counter;
+            dpif.flushed = 1;
+        end
+    endcase
+end
+
+
+endmodule
