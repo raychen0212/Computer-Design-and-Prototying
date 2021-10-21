@@ -1,0 +1,20 @@
+org 0x0000
+
+ori $4, $0, 0x0fff
+ori $5, $0, 0xf0ff
+ori $6, $0, 0x10ff
+
+lw $1, 0($4)
+lw $2, 0($5)
+lw $3, 0($6)
+
+halt
+org 0x0fff
+cfw 0x1234
+
+org 0xf0ff
+cfw 0x2345
+
+org 0x10ff
+cfw 0x3456
+
