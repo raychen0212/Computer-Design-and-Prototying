@@ -113,7 +113,7 @@ always_comb begin
 					cuif.ExtOp		 = 1;
 			end
 	SLTIU:begin
-					cuif.ALUOp = ALU_SLT;
+					cuif.ALUOp = ALU_SLTU;
 					cuif.RegDst = 1; //wsel = rt;
 					cuif.ALUsrc = 1; //portB = imm;
 					cuif.ExtOp		 = 1;
