@@ -58,11 +58,6 @@ import cpu_types_pkg::*;
   assign cif.dWEN = dcif.dmemWEN;
   assign cif.dstore = dcif.dmemstore;
   assign cif.iaddr = dcif.imemaddr;
-<<<<<<< HEAD
-  assign cif.daddr = daddr;
-  */
-=======
   assign cif.daddr = dcif.dmemaddr;
-
->>>>>>> pipeline
+*/
 endmodule

@@ -88,19 +88,11 @@ always_comb begin
 		next_pc = pc4;
 		else if (exmemif.PCsrc_o == 2'b1)
 		next_pc = jumpaddr;
-<<<<<<< HEAD
-	else if (cuif.PCsrc == 2'b10)
-		next_pc = branchaddr;
-	else if (cuif.PCsrc == 2'b11)
-		next_pc = rfif.rdat1;
-	else 
-=======
 		else if ((exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o) || (exmemif.PCsrc_o == 3'b110 && !exmemif.ZeroFlag_o))
 		next_pc = exmemif.branchaddr_o;
 		else if (exmemif.PCsrc_o == 2'b11)
 		next_pc = exmemif.rdat1_o;
 		else
->>>>>>> pipeline
 		next_pc = pc4;
 end
 
@@ -113,21 +105,6 @@ assign dpif.imemaddr = pc;
 /////////////////////////Sign/Zero extend BLOCK////////////
 always_comb begin
 	imm =0;
-<<<<<<< HEAD
-  if (cuif.ExtOp == 2'b0)
-		imm = {16'h0000, cuif.imm}; //zero extend
-	else if(cuif.ExtOp == 2'b1)begin
-		if(cuif.imm[15] == 1'b1)begin
-			imm = {16'hffff, cuif.imm[15:0]};
-		end
-		else if(cuif.imm[15] == 1'b0)begin
-			imm = {16'h0000, cuif.imm[15:0]};
-		end
-	end
-    //imm = 32'($signed(cuif.imm)); //sign extend
-	else if(cuif.ExtOp == 2'b10)	
-    imm = {cuif.imm, 16'h0000};		//LUI
-=======
 	check = 0;
   	if (idexif.ExtOp_o == 2'b0)begin
 		imm = {16'h0000, idexif.imm_o}; //zero extend
@@ -147,13 +124,12 @@ always_comb begin
 	else if(idexif.ExtOp_o == 2'b10)	begin
 		imm = {idexif.imm_o, 16'h0000};		//LUI
 	end
->>>>>>> pipeline
 end
 
 ///////////////////////////////////////////////////////////
 
 /////////////////////////ALU logic////////////////////
-//assign aluif.PortA = idexif.rdat1_o;
+//assign aluif.PortA = icopy a file from another branch gitdexif.rdat1_o;
 assign aluif.ALUOP = idexif.ALUOp_o;
 assign dpif.dmemaddr = exmemif.OutputPort_o;
 
