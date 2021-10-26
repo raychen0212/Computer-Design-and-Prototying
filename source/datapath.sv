@@ -207,7 +207,7 @@ always_ff @(posedge CLK, negedge nRST) begin
   if(!nRST)
     dpif.halt <= 0;
   else 
-    dpif.halt <= memwbif.halt_o;
+    dpif.halt <= memwbif.halt_i;
 end
 ////////////////////////////////////////////////////////////////
 ////////////////Forward_unit///////////////////////////////////
