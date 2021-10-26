@@ -16,18 +16,18 @@ interface control_unit_if;
 	logic [25:0] addr;
 
 //Controls
-	logic RegWr, halt, ALUsrc, iREN, dREN, dWEN, equal;
-	logic [1:0] RegDst, PCsrc, ExtOp, MemToReg;
+	logic RegWr, halt, ALUsrc, iREN, dREN, dWEN, branch, jump, stopread;
+	logic [2:0] RegDst, PCsrc, ExtOp, MemToReg;
 	aluop_t ALUOp;
 	
 	modport tb(
-	input opcode, rs, rt, rd, funct, shamt, imm, addr, RegWr, halt, ALUsrc, iREN, dREN, dWEN, RegDst, PCsrc, ExtOp, MemToReg, ALUOp,
-	output instr, equal
+	input opcode, rs, rt, rd, funct, shamt, imm, addr, RegWr, halt, ALUsrc, iREN, dREN, dWEN, RegDst, PCsrc, ExtOp, MemToReg, ALUOp, stopread,
+	output instr, branch, jump
 	);
 
 	modport cu(
-	input instr, equal,
-	output  opcode, rs, rt, rd, funct, shamt, imm, addr, RegWr, halt, ALUsrc, iREN, dREN, dWEN, RegDst, PCsrc, ExtOp, MemToReg, ALUOp
+	input instr, branch, jump,
+	output  opcode, rs, rt, rd, funct, shamt, imm, addr, RegWr, halt, ALUsrc, iREN, dREN, dWEN, RegDst, PCsrc, ExtOp, MemToReg, ALUOp, stopread
 	);
 endinterface
 `endif
