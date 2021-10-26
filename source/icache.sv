@@ -10,10 +10,6 @@ module icache (input logic CLK, nRST, datapath_cache_if.icache dpif, caches_if.i
 //tag = 26 bits
 //index = 4 bits
 
-//logic valid;
-//logic [25:0] tag;
-//logic [32:0] data;
-
 logic hit;
 logic miss;
 logic [2:0]debug;
