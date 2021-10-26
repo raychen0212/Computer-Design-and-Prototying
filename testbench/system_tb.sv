@@ -35,50 +35,48 @@ module system_tb;
   // dut
 `ifndef MAPPED
   system                              DUT (CLK,nRST,syif);
-
-  // CPU Tracker. Uncomment and change signal names to enable.
   
+  // NOTE: All of these signals MUST be passed all the way through
+  // to the write back stage and sampled in the WRITEBACK stage.
+  // This means more signals that would normally be necessary
+  // for correct execution must be passed along to help with debugging.
   cpu_tracker                         cpu_track0 (
     // No need to change this
     .CLK(DUT.CPU.DP.CLK),
-    // Since single cycle, this is just PC enable
-    .wb_stall(~DUT.CPU.DP.pcen),
+    // This is the enable signal for the write back stage
+    .wb_enable(DUT.CPU.DP.memwbif.en),
     // The 'funct' portion of an instruction. Must be of funct_t type
-    .funct(DUT.CPU.DP.cuif.funct),
+    .funct(DUT.CPU.DP.memwbif.funct_o),
     // The 'opcode' portion of an instruction. Must be of opcode_t type
-    .opcode(DUT.CPU.DP.cuif.opcode),
+    .opcode(DUT.CPU.DP.memwbif.opcode_o),
     // The 'rs' portion of an instruction
-    .rs(DUT.CPU.DP.cuif.rs),
+    .rs(DUT.CPU.DP.memwbif.rs_o),
     // The 'rt' portion of an instruction
-    .rt(DUT.CPU.DP.cuif.rt),
-    // The final selected wsel
-    .wsel(DUT.CPU.DP.rfif.wsel),
-    // Make sure the interface (dpif) matches your name
-    .instr(DUT.CPU.DP.dpif.imemload),
+    .rt(DUT.CPU.DP.memwbif.rt_o),
+    // The final wsel
+    .wsel(DUT.CPU.DP.memwbif.wsel_o),
+    // The 32 bit instruction
+    .instr(DUT.CPU.DP.memwbif.instr_o),
     // Connect the PC to this
-    .pc(DUT.CPU.DP.pc),
+    .pc(DUT.CPU.DP.memwbif.pc_o),
     // Connect the next PC value (the next registered value) here
-    .npc(DUT.CPU.DP.next_pc),
+    .next_pc_val(DUT.CPU.DP.memwbif.next_pc_o),
     // The final imm/shamt signals
-    // This means it should already be shifted/extended/whatever
-    .imm(DUT.CPU.DP.imm),
-    .shamt(DUT.CPU.DP.cuif.shamt),
-     .lui(DUT.CPU.DP.cuif.imm),
+    // This means it should already be extended 
+    .imm(DUT.CPU.DP.memwbif.imm_o),
+    .shamt(DUT.CPU.DP.memwbif.imm_o),
+    // the value for lui BEFORE being being shifted
+     .lui_pre_shift(DUT.CPU.DP.memwbif.lui_imm_o),
     // The branch target (aka offset added to npc)
-    .branch_addr(DUT.CPU.DP.pc4),
-    // Make sure the interface (dpif) matches your name
-    .dat_addr(DUT.CPU.DP.dpif.dmemaddr),
-    // Make sure the interface (dpif) matches your name
-    .store_dat(DUT.CPU.DP.dpif.dmemstore),
-    // Make sure the interface (dpif) matches your name
-    .reg_dat(DUT.CPU.DP.rfif.wdat),
-    // Make sure the interface (dpif) matches your name
-    .load_dat(DUT.CPU.DP.dpif.dmemload),
-    // Make sure the interface (dpif) matches your name
-    .dhit(DUT.CPU.DP.dpif.dhit)
+    .branch_addr(DUT.CPU.DP.memwbif.branchaddr_o),
+    // Port O of the ALU from the M/W register
+    .dat_addr(DUT.CPU.DP.memwbif.OutputPort_o),
+    // The value that was stored in memory during MEM stage
+    .store_dat(DUT.CPU.DP.memwbif.rdat2_o),
+    // The value selected to be written into register during WB stage
+    .reg_dat(DUT.CPU.DP.wdat)
   );
   
-
 `else
   system                              DUT (,,,,//for altera debug ports
     CLK,

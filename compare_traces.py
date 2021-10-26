@@ -83,13 +83,24 @@ def clean_sim_trace():
         new_line = ' '.join(broken_line_arr) + '\n'
       cleaned_output += new_line
       line = trace_file.readline()
-  cleaned_output = cleaned_output[:-1] # remove a final '\n'
+    # DO the Halt
+    if line and line[-5:-1] == 'HALT':
+      broken_line_arr = line.split()
+      new_line = ' '.join(broken_line_arr) + '\n'
+      cleaned_output += new_line
+      line = trace_file.readline()
+      broken_line_arr = line.split()
+      new_line = '    ' + ' '.join(broken_line_arr) + '\n'
+      cleaned_output += new_line
+
   with open('cleaned_sim_trace.log', 'w') as trace_file:
     trace_file.write(cleaned_output)
 
 if __name__ == '__main__':
   description = 'Compare your processor\'s trace to that of the simulator.'
   description += 'This script expects to be ran at the top level of your repo.'
+  description += 'If a test name is provided, it should be the full name of the'
+  description += 'test case, but not include the file extension or path'
   help = 'Run this specific test. Optional. If not specified, the current '
   help += 'meminit.hex is used.'
   parser = argparse.ArgumentParser(description=description)
@@ -98,12 +109,10 @@ if __name__ == '__main__':
   args = parser.parse_args()
   if args.test_name:
     asm_dir = './asmFiles/' + args.test_name + '.asm'
-    try:    
-	    asm_file = glob.glob(asm_dir)[0]
-    except IndexError:
-        err_str = 'ERROR: Please provide an existing asm file,'
-        err_str += 'with no extension or leading path'
-        sys.exit(err_str)
+    try:
+      asm_file = glob.glob(asm_dir)[0]
+    except:
+      sys.exit("ERROR: Please provide the exact name of a test case.")
     ret = subprocess.call(['asm', asm_file])
     if ret:
       sys.exit('ERROR: ' + asm_file + ' could not be assembled.')

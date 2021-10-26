@@ -16,7 +16,7 @@ always_comb begin
 	 cuif.funct  = funct_t'(cuif.instr[5:0]);
 	 cuif.imm 	 = cuif.instr[15:0];
 	 cuif.addr 	 = cuif.instr[25:0];
-
+	 cuif.stopread = 0;
 
 //1-bit signals
 	cuif.RegWr = 1; //rfif.WEN 
@@ -77,24 +77,19 @@ always_comb begin
 	BEQ:begin
 					cuif.ALUOp = ALU_SUB;
 					cuif.RegWr = 0;
-					if(cuif.equal)
-						cuif.PCsrc = 2'b10; //branch
-					else
-						cuif.PCsrc = 2'b00; //pc = pc+4
+					cuif.PCsrc = 2'b10; //branch
 			end
 	BNE:begin
 					cuif.ALUOp = ALU_SUB;
 					cuif.RegWr = 0;
-					if(!cuif.equal)
-						cuif.PCsrc = 2'b10; //branch
-					else
-						cuif.PCsrc = 2'b00; //pc = pc+4
+					cuif.PCsrc = 3'b110; //branch
 			end
 	LUI:begin
 					cuif.ALUOp		 = ALU_OR;
 					cuif.RegDst = 1; //wsel = rt;
 					cuif.ExtOp = 2'b10; //zero extend to right
 					cuif.ALUsrc = 1; //portB = imm;
+					cuif.MemToReg = 2'b11;
 			end
 	LW:begin
 					cuif.RegDst = 1; //wsel = rt;
@@ -103,6 +98,8 @@ always_comb begin
 					cuif.MemToReg = 2'b1;
 					cuif.ALUsrc = 1;//portB = imm
 					cuif.ExtOp		 = 1;
+					cuif.stopread = 1;
+					
 		 end
 	ORI:begin
 					cuif.ALUOp = ALU_OR;

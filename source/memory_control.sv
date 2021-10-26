@@ -46,8 +46,8 @@ module memory_control (
 
   //TO CACHE
   assign ccif.dwait = ((ccif.ramstate == ACCESS) && (ccif.dREN || ccif.dWEN)) ? 0 : 1; 
-  assign ccif.dload = ccif.ramload;
+  assign ccif.dload = (ccif.ramstate == ACCESS)? ccif.ramload : 0;
   assign ccif.iwait = ((ccif.ramstate == ACCESS) && (!(ccif.dREN || ccif.dWEN)) && ccif.iREN) ? 0 : 1;
-  assign ccif.iload = (ccif.iREN) ? ccif.ramload : 0;
+  assign ccif.iload = ((ccif.ramstate == ACCESS) && ccif.iREN ) ? ccif.ramload : 0;
 
 endmodule
