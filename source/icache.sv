@@ -33,7 +33,7 @@ always_ff @( posedge CLK, negedge nRST ) begin : icache_ff
             frame[i] <= '0;
         end
     end
-    else begin
+    else if(cif.iREN && ~cif.iwait) begin
         //if(cif.iREN && ~cif.iwait)begin
         state <= nxt_state;
         //frame[icache_addr.idx].valid <= valid;
@@ -47,9 +47,6 @@ always_ff @( posedge CLK, negedge nRST ) begin : icache_ff
 end
 always_comb begin : icache_logic
     nxt_state = IDLE;
-    //valid = frame[icache_addr.idx].valid;
-    //tag = frame[icache_addr.idx].tag;
-    //data = frame[icache_addr.idx].data;
     dpif.ihit = '0;
     dpif.imemload = '0;
     cif.iaddr = dpif.imemaddr;
@@ -71,19 +68,14 @@ always_comb begin : icache_logic
             end
         end
         LOAD: begin
-            //valid = 1;
-            //tag = icache_addr.tag;
-            //data = cif.iload;
-            
+            //cif.iREN = 1;
+            dpif.ihit = ~cif.iwait;
             if(!cif.iwait)begin
-                dpif.ihit = ~cif.iwait;
                 dpif.imemload = cif.iload;
                 debug = 3'b011;
                 //dpif.ihit = 0;
                 nxt_state = IDLE;
             end
-            //cif.iaddr = dpif.imemaddr;
-            //cif.iREN = 1;
             else begin
                 debug = 3'b100;
                 nxt_state = LOAD;

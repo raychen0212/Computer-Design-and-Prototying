@@ -57,24 +57,20 @@ add wave -noupdate -group alu -radix hexadecimal /system_tb/DUT/CPU/DP/aluif/Por
 add wave -noupdate -group alu /system_tb/DUT/CPU/DP/aluif/PortB
 add wave -noupdate -group alu /system_tb/DUT/CPU/DP/aluif/OutputPort
 add wave -noupdate -group alu /system_tb/DUT/CPU/DP/aluif/ALUOP
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/WEN
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/wsel
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rsel1
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rsel2
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/wdat
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rdat1
-add wave -noupdate -expand -group registerfile /system_tb/DUT/CPU/DP/rfif/rdat2
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramREN
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramWEN
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramaddr
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramstore
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramload
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/ramstate
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memREN
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memWEN
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memaddr
-add wave -noupdate -group ram /system_tb/DUT/RAM/ramif/memstore
-add wave -noupdate -expand /system_tb/DUT/CPU/DP/rf/reg_map
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/WEN
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/wsel
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/rsel1
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/rsel2
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/wdat
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/rdat1
+add wave -noupdate -group registerfile /system_tb/DUT/CPU/DP/rfif/rdat2
+add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramREN
+add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramWEN
+add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramaddr
+add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramstore
+add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramload
+add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramstate
+add wave -noupdate /system_tb/DUT/CPU/DP/rf/reg_map
 add wave -noupdate -expand -group {memory control} /system_tb/DUT/CPU/ccif/cif0/iwait
 add wave -noupdate -expand -group {memory control} /system_tb/DUT/CPU/ccif/cif0/dwait
 add wave -noupdate -expand -group {memory control} /system_tb/DUT/CPU/ccif/cif0/iREN
@@ -166,6 +162,7 @@ add wave -noupdate -group ex-mem /system_tb/DUT/CPU/DP/exmemif/MemToReg_o
 add wave -noupdate -group ex-mem /system_tb/DUT/CPU/DP/exmemif/PCsrc_o
 add wave -noupdate -group ex-mem /system_tb/DUT/CPU/DP/exmemif/flush
 add wave -noupdate -group ex-mem /system_tb/DUT/CPU/DP/exmemif/en
+add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/dREN_o
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/imm_i
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/pc4_i
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/OutputPort_i
@@ -186,25 +183,57 @@ add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/MemToReg_i
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/MemToReg_o
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/flush
 add wave -noupdate -group mem-wb /system_tb/DUT/CPU/DP/memwbif/en
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_en
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_flush
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/idex_flush
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/idex_wsel
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/exmem_wsel
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/memwb_wsel
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_rs
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_rt
-add wave -noupdate -expand -group {hazard unit} /system_tb/DUT/CPU/DP/huif/exmem_PCSrc
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/idex_rs
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/idex_rt
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/exmem_wsel
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/memwb_wsel
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/forward_1
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/forward_2
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/exmem_RegWr
-add wave -noupdate -expand -group {forward unit} /system_tb/DUT/CPU/DP/fuif/memwb_RegWr
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_en
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_flush
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/idex_flush
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/idex_wsel
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/exmem_wsel
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/memwb_wsel
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_rs
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/ifid_rt
+add wave -noupdate -group {hazard unit} /system_tb/DUT/CPU/DP/huif/exmem_PCSrc
+add wave -noupdate /system_tb/DUT/CPU/DP/huif/dhit
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/idex_rs
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/idex_rt
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/exmem_wsel
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/memwb_wsel
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/forward_1
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/forward_2
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/exmem_RegWr
+add wave -noupdate -group {forward unit} /system_tb/DUT/CPU/DP/fuif/memwb_RegWr
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/CLK
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/nRST
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/hit
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/miss
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/debug
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/icache_addr
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/frame
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/state
+add wave -noupdate -group icache /system_tb/DUT/CPU/CM/ICACHE/nxt_state
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/CLK
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/nRST
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/left_tag
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/right_tag
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/left_dirty
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/right_dirty
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/left_valid
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/right_valid
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/left_data0
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/left_data1
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/right_data0
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/right_data1
+add wave -noupdate -expand -group dcache -expand /system_tb/DUT/CPU/CM/DCACHE/dcache_addr
+add wave -noupdate -expand -group dcache -expand -subitemconfig {{/system_tb/DUT/CPU/CM/DCACHE/frame[6]} -expand {/system_tb/DUT/CPU/CM/DCACHE/frame[6].left} -expand {/system_tb/DUT/CPU/CM/DCACHE/frame[6].left.data} -expand {/system_tb/DUT/CPU/CM/DCACHE/frame[6].right} -expand {/system_tb/DUT/CPU/CM/DCACHE/frame[6].right.data} -expand} /system_tb/DUT/CPU/CM/DCACHE/frame
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/state
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/next_state
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/recent
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/next_recent
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/hit_counter
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/next_hit_counter
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/flush_count
+add wave -noupdate -expand -group dcache /system_tb/DUT/CPU/CM/DCACHE/next_flush_count
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {136104 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1011097 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 176
 configure wave -valuecolwidth 100
@@ -220,4 +249,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {646108 ps}
+WaveRestoreZoom {613577 ps} {1259685 ps}

@@ -1,0 +1,79 @@
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# ** Warning: Multiple occurences of ini variable ToggleWidthLimit are found, only first occurence will be considered.
+# vsim -coverage -suppress 12110 -c -do "run -all; exit;" -L altera_mf_ver -L altera_ver -L cycloneive_ver -wlf system_tb.wlf work.system_tb 
+# Start time: 12:58:24 on Oct 27,2021
+# ** Note: (vsim-8009) Loading existing optimized design _opt1
+# //  Questa Sim
+# //  Version 10.7a linux Mar 26 2018
+# //
+# //  Copyright 1991-2018 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  QuestaSim and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.system_tb(fast)
+# Loading work.cpu_types_pkg(fast)
+# Loading work.system_if(fast)
+# Loading work.test(fast)
+# Loading work.system(fast)
+# Loading work.cpu_ram_if(fast)
+# Loading work.pipeline(fast)
+# Loading work.datapath_cache_if(fast)
+# Loading work.caches_if(fast__1)
+# Loading work.cache_control_if(fast)
+# Loading work.datapath(fast)
+# Loading work.control_unit_if(fast)
+# Loading work.request_unit_if(fast)
+# Loading work.alu_if(fast)
+# Loading work.register_file_if(fast)
+# Loading work.if_id_if(fast)
+# Loading work.id_ex_if(fast)
+# Loading work.ex_mem_if(fast)
+# Loading work.mem_wb_if(fast)
+# Loading work.hazard_unit_if(fast)
+# Loading work.forward_unit_if(fast)
+# Loading work.control_unit(fast)
+# Loading work.request_unit(fast)
+# Loading work.alu(fast)
+# Loading work.register_file_sv_unit(fast)
+# Loading work.register_file(fast)
+# Loading work.if_id(fast)
+# Loading work.id_ex(fast)
+# Loading work.ex_mem_sv_unit(fast)
+# Loading work.ex_mem(fast)
+# Loading work.mem_wb_sv_unit(fast)
+# Loading work.mem_wb(fast)
+# Loading work.hazard_unit(fast)
+# Loading work.forward_unit(fast)
+# Loading work.caches(fast)
+# Loading work.icache_sv_unit(fast)
+# Loading work.icache(fast)
+# Loading work.dcache_sv_unit(fast)
+# Loading work.dcache(fast)
+# Loading work.memory_control(fast)
+# Loading work.ram(fast)
+# Loading altera_mf_ver.altsyncram(fast)
+# Loading work.cpu_tracker_sv_unit(fast)
+# Loading work.cpu_tracker(fast)
+# ** Warning: (vsim-3015) [PCDPC] - Port size (5) does not match connection size (32) for port 'shamt'. The port definition is at: testbench/cpu_tracker.sv(44).
+#    Time: 0 ps  Iteration: 0  Instance: /system_tb/cpu_track0 File: testbench/system_tb.sv Line: 43
+# ** Warning: (vsim-3015) [PCDPC] - Port size (16) does not match connection size (32) for port 'lui_pre_shift'. The port definition is at: testbench/cpu_tracker.sv(45).
+#    Time: 0 ps  Iteration: 0  Instance: /system_tb/cpu_track0 File: testbench/system_tb.sv Line: 43
+# run -all
+# Starting Processor.
+# Halted at 2560 time and ran for        127 cycles.
+# Starting memory dump.
+# Finished memory dump.
+# End time: 12:58:25 on Oct 27,2021, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 2

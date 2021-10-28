@@ -64,10 +64,22 @@ module datapath (
 word_t pc, next_pc, pc4, jumpaddr;
 logic pcen;
 //logic [2:0] PCSrc;
-assign pcen = ((dpif.ihit & !dpif.dhit & ifidif.en) 
+assign pcen = ((dpif.ihit & ifidif.en) 
  || (exmemif.PCsrc_o == 2'b1)
  || ((exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o) || (exmemif.PCsrc_o == 3'b110 && !exmemif.ZeroFlag_o)) 
  || (exmemif.PCsrc_o == 2'b11))? 1:0;
+
+ /*always_comb begin : PCEN
+	pcen = 0;
+	if(exmemif.dWEN_o || exmemif.MemToReg_o)begin
+		if(dpif.ihit && dpif.dhit && ~ifidif.en)begin
+			pcen = 1;
+		end
+	end
+	else if (dpif.ihit && ifidif.en) begin
+		pcen = 1;
+	end
+ end*/
 
 
 always_ff@(posedge CLK, negedge nRST)begin
@@ -120,7 +132,6 @@ always_comb begin
 			check = 2'b11;
 		end
 	end
-    //imm = 32'($signed(idexif.imm_o)); //sign extend
 	else if(idexif.ExtOp_o == 2'b10)	begin
 		imm = {idexif.imm_o, 16'h0000};		//LUI
 	end
@@ -144,8 +155,8 @@ end
 
 //////////////////////Register File logic///////////////////
 assign dpif.dmemstore = exmemif.rdat2_o;
-//assign cuif.instr =  ifidif.instr_o;
-assign cuif.instr =  (memwbif.dREN_o)? 0: ifidif.instr_o;
+assign cuif.instr =  ifidif.instr_o;
+//assign cuif.instr =  (memwbif.dREN_o)? 0: ifidif.instr_o;
 //assign rfif.WEN = (dpif.ihit || dpif.dhit)? (memwbif.RegWr_o? 1 : 0): 0;
 assign rfif.WEN = memwbif.RegWr_o;
 assign rfif.rsel1 = cuif.rs;
@@ -310,7 +321,13 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.imm_i	= imm;
 	exmemif.pc4_i	= idexif.pc4_o;
 	exmemif.jaddr_i = idexif.jaddr_o;
-	exmemif.branchaddr_i = idexif.pc4_o + (idexif.imm_o << 2);
+	if(idexif.imm_o[15] == 1'b1)begin
+			exmemif.branchaddr_i  = idexif.pc4_o + ({16'hffff, idexif.imm_o[15:0]} << 2);
+		end
+	else if(idexif.imm_o[15] == 1'b0)begin
+			exmemif.branchaddr_i  = idexif.pc4_o + ({16'h0000, idexif.imm_o[15:0]} << 2);
+	end
+	//exmemif.branchaddr_i = idexif.pc4_o + (idexif.imm_o << 2);
 	exmemif.OutputPort_i = aluif.OutputPort;
 	//exmemif.wsel in regfile block
 	exmemif.RegWr_i = idexif.RegWr_o;

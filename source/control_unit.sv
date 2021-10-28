@@ -76,12 +76,14 @@ always_comb begin
 			 end
 	BEQ:begin
 					cuif.ALUOp = ALU_SUB;
+					//cuif.ExtOp = 2'b1;
 					cuif.RegWr = 0;
 					cuif.PCsrc = 2'b10; //branch
 			end
 	BNE:begin
 					cuif.ALUOp = ALU_SUB;
 					cuif.RegWr = 0;
+					//cuif.ExtOp = 2'b1;
 					cuif.PCsrc = 3'b110; //branch
 			end
 	LUI:begin
