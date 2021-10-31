@@ -145,11 +145,14 @@ assign aluif.ALUOP = idexif.ALUOp_o;
 assign dpif.dmemaddr = exmemif.OutputPort_o;
 
 always_comb begin
+	/*
 	aluif.PortB = 0;
 	if(idexif.ALUsrc_o == 0)
 		aluif.PortB = muxB;
 	else if (idexif.ALUsrc_o == 1)
 		aluif.PortB = imm;
+		*/
+	aluif.PortB = (idexif.ALUsrc_o == 0) ? muxB : imm;
 end
 ////////////////////////////////////////////////////////////
 
@@ -322,12 +325,15 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.pc4_i	= idexif.pc4_o;
 	exmemif.jaddr_i = idexif.jaddr_o;
 	exmemif.branchaddr_i  = 0 ;
+	exmemif.branchaddr_i = (idexif.imm_o[15] == 1'b1) ? (idexif.pc4_o + ({16'hffff, idexif.imm_o[15:0]} << 2)) : idexif.pc4_o + ({16'h0000, idexif.imm_o[15:0]} << 2);
+	/*
 	if(idexif.imm_o[15] == 1'b1)begin
 			exmemif.branchaddr_i  = idexif.pc4_o + ({16'hffff, idexif.imm_o[15:0]} << 2);
 		end
 	else if(idexif.imm_o[15] == 1'b0)begin
 			exmemif.branchaddr_i  = idexif.pc4_o + ({16'h0000, idexif.imm_o[15:0]} << 2);
 	end
+	*/
 	//exmemif.branchaddr_i = 
 	exmemif.OutputPort_i = aluif.OutputPort;
 	//exmemif.wsel in regfile block

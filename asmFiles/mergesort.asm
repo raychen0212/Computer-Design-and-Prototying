@@ -118,7 +118,7 @@ m_end:
 
 org 0x300
 size:
-cfw 64
+cfw 12
 data:
 cfw 90
 cfw 81
@@ -140,50 +140,6 @@ cfw 11
 cfw 29
 cfw 7
 cfw 33
-cfw 99
-cfw 27
-cfw 100
-cfw 66
-cfw 61
-cfw 32
-cfw 1
-cfw 54
-cfw 4
-cfw 61
-cfw 56
-cfw 3
-cfw 48
-cfw 8
-cfw 66
-cfw 100
-cfw 15
-cfw 92
-cfw 65
-cfw 32
-cfw 9
-cfw 47
-cfw 89
-cfw 17
-cfw 7
-cfw 35
-cfw 68
-cfw 32
-cfw 10
-cfw 7
-cfw 23
-cfw 92
-cfw 91
-cfw 40
-cfw 26
-cfw 8
-cfw 36
-cfw 38
-cfw 8
-cfw 38
-cfw 16
-cfw 50
-cfw 7
-cfw 67
 
 org 0x500
 sorted:
