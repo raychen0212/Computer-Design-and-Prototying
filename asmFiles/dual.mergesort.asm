@@ -2,18 +2,20 @@
 #Optimized for 512 bit I$ 1024 bit D$
 #Author Adam Hendrickson ahendri@purdue.edu
 
+
+#CORE 0
 org 0x0000
   ori   $fp, $zero, 0xFFFC
   ori   $sp, $zero, 0xFFFC
   ori   $a0, $zero, data
   lw    $s0, size($zero)
-  ori   $t1, $0, 1
-  srlv  $a1, $t1, $s0
+  ori   $t0, $0, 1
+  srlv  $a1, $t0, $s0
   or    $s1, $zero, $a0
   or    $s2, $zero, $a1
   jal   insertion_sort
-  ori   $t1, $0, 1
-  srlv  $t0, $t1, $s0
+  ori   $t0, $0, 1
+  srlv  $t0, $t0, $s0
   subu  $a1, $s0, $t0
   ori   $t1, $0, 2
   sllv  $t0, $t1, $t0
@@ -21,18 +23,37 @@ org 0x0000
   addu  $a0, $a0, $t0
   or    $s3, $zero, $a0
   or    $s4, $zero, $a1
-  jal   insertion_sort
   or    $a0, $zero, $s1
   or    $a1, $zero, $s2
   or    $a2, $zero, $s3
   or    $a3, $zero, $s4
   ori   $t0, $zero, sorted
   push  $t0
+  ori   $t1, $zero, flag
+wait1:
+  lw    $t2, 0($t1)
+  beq   $t2, $zero, wait1
   jal   merge
   addiu $sp, $sp, 4
   halt
 
-
+#CORE 1
+org 0x0200
+  ori   $fp, $zero, 0x3FFC
+  ori   $sp, $zero, 0x3FFC
+  ori   $a0, $zero, data
+  lw    $s0, size($zero)
+  ori   $t0, $0, 1
+  srlv  $a1, $t0, $s0
+  ori   $t0, $0, 2
+  sllv  $t0, $t0, $a1
+  addu  $a0, $a0, $t0
+  subu  $a1, $s0, $a1
+  jal   insertion_sort
+  ori   $t0, $zero, flag
+  ori   $t1, $zero, 1
+  sw    $t1, 0($t0)
+  halt
 
 #void insertion_sort(int* $a0, int $a1)
 # $a0 : pointer to data start
@@ -40,8 +61,8 @@ org 0x0000
 #--------------------------------------
 insertion_sort:
   ori   $t0, $zero, 4
-  ori   $t2, $0, 2
-  sllv  $t1, $t2, $a1
+  ori   $t1, $0, 2
+  sllv  $t1, $t1, $a1
 is_outer:
   sltu  $at, $t0, $t1
   beq   $at, $zero, is_end
@@ -116,13 +137,11 @@ m_end:
 #--------------------------------------
 
 
-org 0x300
+org 0x400
+flag:
+cfw 0
 size:
-<<<<<<< HEAD
-cfw 12
-=======
 cfw 64
->>>>>>> 456a6a46de76982722efd2e635bb3f64bb1adcdd
 data:
 cfw 90
 cfw 81
@@ -144,8 +163,6 @@ cfw 11
 cfw 29
 cfw 7
 cfw 33
-<<<<<<< HEAD
-=======
 cfw 99
 cfw 27
 cfw 100
@@ -190,7 +207,6 @@ cfw 16
 cfw 50
 cfw 7
 cfw 67
->>>>>>> 456a6a46de76982722efd2e635bb3f64bb1adcdd
 
-org 0x500
+org 0x600
 sorted:

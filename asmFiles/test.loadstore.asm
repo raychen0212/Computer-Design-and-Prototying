@@ -9,6 +9,7 @@
   lui   $7,0xdead
 
   ori   $7,$7,0xbeef
+
   lw    $3,0($1)
   lw    $4,4($1)
   lw    $5,8($1)

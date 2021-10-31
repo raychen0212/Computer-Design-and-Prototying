@@ -15,18 +15,14 @@
 
 module caches (
   input logic CLK, nRST,
-  datapath_cache_if dpif,
-
+  datapath_cache_if.cache dcif,
   caches_if cif
 );
-import cpu_types_pkg::*;
-  word_t instr;
-  word_t daddr;
 
   // icache
-  icache  ICACHE(CLK, nRST, dpif.icache, cif.icache);
+  icache  ICACHE(dcif, cif);
   // dcache
-  dcache  DCACHE(CLK, nRST, dpif.dcache, cif.dcache);
+  dcache  DCACHE(dcif, cif);
 
   // single cycle instr saver (for memory ops)
   /*
@@ -61,5 +57,5 @@ import cpu_types_pkg::*;
   assign cif.dstore = dcif.dmemstore;
   assign cif.iaddr = dcif.imemaddr;
   assign cif.daddr = dcif.dmemaddr;
-*/
+  */
 endmodule
