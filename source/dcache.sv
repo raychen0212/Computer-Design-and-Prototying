@@ -34,7 +34,7 @@ logic [2:0] flush_index;
 
 assign dcache_addr = dcachef_t'(dpif.dmemaddr);
 //Deal with cc signal/////////////////
-assign cif.ccwrite = dcif.dmemWEN;
+//assign cif.ccwrite = dcif.dmemWEN;
 logic [25:0] snooptag;
 logic [2:0] snoopidx;
 logic snoopoff;
@@ -101,6 +101,10 @@ always_comb begin
     cif.dstore = 0;
     cif.daddr = 0;
     flush_index = 0;
+
+    //cc signal
+    cif.cctrans = '0;
+    cif.ccwrite = dpif.dmemWEN;
 
     case(state)
         ACCESS:begin
@@ -173,12 +177,16 @@ always_comb begin
                     next_hit_counter = hit_counter + 1;
                     next_recent[dcache_addr.idx] = 1;
                 end
-
+                //deal with cc snoop stuff
+                else if (cif.ccwait && (frame[snoopidx].right.valid || frame[snoopidx].left.valid))begin
+                    next_state = SNOOPCHECK;
+                end
                 else begin //miss logic
                     next_hit_counter = hit_counter - 1;
                     if (recent[dcache_addr.idx] == 0)begin//left recent
                         if(frame[dcache_addr.idx].right.dirty)begin
-                            next_state = WB0;                    end
+                            next_state = WB0;                    
+                        end
                         else begin
                             next_state = MEM0;
                         end
@@ -198,6 +206,49 @@ always_comb begin
             if (dpif.halt)begin //flush
                     next_state = FLUSH_CNT;
                     next_hit_counter = hit_counter;
+            end
+        end
+
+        SNOOPCHECK:begin
+            if (cif.ccwait && snooptag == frame[snoopidx].right.tag && frame[snoopidx].right.dirty)begin
+                next_state = SNOOP_SHARE1;
+                cif.cctrans = 1;
+            end
+            else if (cif.ccwait && snooptag == frame[snoopidx].left.tag && frame[snoopidx].left.dirty)begin
+                next_state = SNOOP_SHARE1;
+                cif.cctrans = 1;
+            end
+            else begin
+                cif.cctrans = 0;
+                next_state = ACCESS;
+            end
+        end
+
+        SNOOP_SHARE1:begin
+            if (!snoopoff)begin
+                cif.dstore = frame[snoopidx].left.data[0];
+                cif.daddr = {frame[dcache_addr.idx].left.tag, dcache_addr.idx,1'b0,2'b00};
+            end
+            else if (snoopoff)begin
+                cif.dstore = frame[snoopidx].right.data[0];
+                cif.daddr = {frame[dcache_addr.idx].right.tag, dcache_addr.idx,1'b0,2'b00};
+            end
+            if (~cif.dwait)begin
+                next_state = SNOOP_SHARE2;
+            end
+        end
+
+        SNOOP_SHARE2:begin
+            if (!snoopoff)begin
+                cif.dstore = frame[snoopidx].left.data[1];
+                cif.daddr = {frame[dcache_addr.idx].left.tag, dcache_addr.idx,1'b1,2'b00};
+            end
+            else if (snoopoff)begin
+                cif.dstore = frame[snoopidx].right.data[1];
+                cif.daddr = {frame[dcache_addr.idx].right.tag, dcache_addr.idx,1'b1,2'b00};
+            end
+            if (~cif.dwait)begin
+                next_state = ACCESS;
             end
         end
         
