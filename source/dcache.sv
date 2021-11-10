@@ -24,7 +24,7 @@ word_t left_data0, left_data1, right_data0, right_data1;
 dcachef_t dcache_addr;
 twoway_dcache [7:0]frame; // has 8 rows
 
-typedef enum logic [3:0] {ACCESS, WB0, WB1, MEM0, MEM1, FLUSH_CNT, FLUSH0, FLUSH1, HCTR, HALT} State;
+typedef enum logic [3:0] {ACCESS, WB0, WB1, MEM0, MEM1, FLUSH_CNT, FLUSH0, FLUSH1, HCTR, HALT, SNOOPCHECK, SNOOP_SHARE1, SNOOP_SHARE2} State;
 State state,  next_state; 
 
 logic recent[7:0], next_recent[7:0]; //0 for left, 1 for right
@@ -33,7 +33,15 @@ logic [4:0] flush_count, next_flush_count;
 logic [2:0] flush_index;
 
 assign dcache_addr = dcachef_t'(dpif.dmemaddr);
-
+//Deal with cc signal/////////////////
+assign cif.ccwrite = dcif.dmemWEN;
+logic [25:0] snooptag;
+logic [2:0] snoopidx;
+logic snoopoff;
+assign snooptag = cif.ccsnoopaddr[31:6];
+assign snoopidx = cif.ccsnoopaddr[5:3];
+assign snoopoff = cif.ccsnoopaddr[2];
+////////////////////////////////////
 always_ff @( posedge CLK, negedge nRST ) begin : dcache_ff
     if(nRST == 0)begin
         state <= ACCESS;
@@ -187,29 +195,6 @@ always_comb begin
 
             end
 
-            /*else begin //miss logic
-                next_hit_counter = hit_counter - 1;
-                if (recent[dcache_addr.idx] == 0)begin//left recent
-                    if(frame[dcache_addr.idx].right.dirty)begin
-                        next_state = WB0;
-                        test = 0;
-                    end
-                    else begin
-                        next_state = MEM0;
-                        test = 1;
-                    end
-                end
-                else if (recent[dcache_addr.idx] == 1)begin//right recent
-                    if(frame[dcache_addr.idx].left.dirty)begin
-                        next_state = WB0;
-                        test = 2;
-                    end
-                    else begin
-                        next_state = MEM0;
-                        test = 3;
-                    end
-                end
-            end*/
             if (dpif.halt)begin //flush
                     next_state = FLUSH_CNT;
                     next_hit_counter = hit_counter;
