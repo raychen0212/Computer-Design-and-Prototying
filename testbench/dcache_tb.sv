@@ -1,6 +1,8 @@
 `include "datapath_cache_if.vh"
 `include "caches_if.vh"
 `include "cpu_types_pkg.vh"
+`include "cpu_ram_if.vh"
+`include "system_if.vh"
 import cpu_types_pkg::*;
 
 // mapped timing needs this. 1ns is too fast
@@ -15,166 +17,37 @@ module dcache_tb;
   // clock
   always #(PERIOD/2) CLK++;
 
-  // interface
-  datapath_cache_if dpif();
-  caches_if cif();
-  // test program
-  test PROG (CLK, nRST, dpif, cif);
+  
   // DUT
-`ifndef MAPPED
-  dcache DUT(CLK, nRST, dpif, cif);
-`endif
+datapath_cache_if dcif0();
+caches_if cif0();
+datapath_cache_if dcif1();
+caches_if cif1();
+cpu_ram_if crif();
+
+test PROG (CLK, nRST, dcif0, cif0, dcif1, cif1);
+dcache DUT0(CLK, nRST, dcif0, cif0);
+dcache DUT1(CLK, nRST, dcif1, cif1);
+cache_control_if #(.CPUS(2)) ccif(cif0, cif1);
+ram DUTRAM(CLK, nRST, crif);
+memory_control MC(CLK, nRST, ccif);
+
+assign crif.ramWEN = ccif.ramWEN;
+assign crif.ramREN = ccif.ramREN;
+assign crif.ramstore = ccif.ramstore;
+assign crif.ramaddr = ccif.ramaddr;
+assign ccif.ramload = crif.ramload;
+assign ccif.ramstate = crif.ramstate;
+assign crif.memaddr = ccif.ramaddr;
+assign crif.memstore = ccif.ramstore;
+assign crif.memREN = ccif.ramREN;
+assign crif.memWEN = ccif.ramWEN;
 
 endmodule
 
-program test(input logic CLK, output logic nRST, datapath_cache_if dpif, caches_if cif);
-
-parameter PERIOD = 10;
-integer test_num;
+program test(input logic CLK, output logic nRST, datapath_cache_if dcif0, caches_if cif0, datapath_cache_if dcif1, caches_if cif1);
 initial begin
   
-  nRST = 0;
-  @(posedge CLK);
-  nRST = 1;
-  dpif.halt = 0;
-  @(posedge CLK);
-
-  test_num = 0;
-  //"read miss ";
-  dpif.dmemREN = 1;
-  dpif.dmemWEN = 0;
-  dpif.dmemaddr = {26'haaaaaa, 3'b01, 3'b000};
-  cif.dwait = 0;
-  cif.dload = 32'h12341234;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-	#(PERIOD)
-
-  
-  //"read miss, load in same frame different block";
-  @(posedge CLK);
-  test_num = 1;
-  dpif.dmemREN = 1;
-  dpif.dmemWEN = 0;
-  dpif.dmemaddr = {26'hbbbbbb, 3'b01, 3'b000};
-  cif.dwait = 0;
-  cif.dload = 32'h12341234;
-  
-
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-	#(PERIOD)
-
-
-  //testcase 2
-  //"read hit";
-  @(posedge CLK);
-  test_num = 2;
-  dpif.dmemREN = 1;
-  dpif.dmemWEN = 0;
-  dpif.dmemaddr = {26'hbbbbbb, 3'b01, 3'b000};
-  cif.dwait = 0;
-  cif.dload = 32'h43214321;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-	#(PERIOD)
-
-
-  @(posedge CLK);
-  //"write miss";
-  test_num = 3;
-  dpif.dmemREN = 0;
-  dpif.dmemWEN = 1;
-  dpif.dmemaddr = {26'hcccccc, 3'b11, 3'b000};
-  dpif.dmemstore = 32'h11111111;
-  cif.dwait = 0;
-  cif.dload = 32'h43214321;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-  #(PERIOD)
-
- //"write miss, same index different tag";
-  test_num = 4;
-  dpif.dmemREN = 0;
-  dpif.dmemWEN = 1;
-  dpif.dmemaddr = {26'hddddddd, 3'b11, 3'b000};
-  dpif.dmemstore = 32'h22222222;
-  cif.dwait = 0;
-  cif.dload = 32'h43214321;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-  #(PERIOD)
-
-  @(posedge CLK);
- //"write hit";
-  test_num = 5;
-  dpif.dmemREN = 0;
-  dpif.dmemWEN = 1;
-  dpif.dmemaddr = {26'hddddddd, 3'b11, 3'b000};
-  dpif.dmemstore = 32'h33333333;
-  cif.dwait = 0;
-  cif.dload = 32'h55555555;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-	#(PERIOD)
-
-    @(posedge CLK);
- //"write hit 2";
-  test_num = 6;
-  dpif.dmemREN = 0;
-  dpif.dmemWEN = 1;
-  dpif.dmemaddr = {26'hccccccc, 3'b11, 3'b000};
-  dpif.dmemstore = 32'h33333333;
-  cif.dwait = 0;
-  cif.dload = 32'h66666666;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-	#(PERIOD)
-
-    @(posedge CLK);
- //"read miss write back";
-  test_num = 7;
-  dpif.dmemREN = 1;
-  dpif.dmemWEN = 0;
-  dpif.dmemaddr = {26'heeeeeee, 3'b11, 3'b000};
-  dpif.dmemstore = 32'h33333333;
-  cif.dwait = 0;
-  cif.dload = 32'h43214321;
-  
-  @(posedge CLK);
-  @(posedge CLK);
-  #(PERIOD)
-	#(PERIOD)
-
-      @(posedge CLK);
- //"flush";
-  dpif.halt = 1;
-  test_num = 8;
-  dpif.dmemREN = 0;
-  dpif.dmemWEN = 0;
-  dpif.dmemaddr = {26'heeeeeee, 3'b11, 3'b000};
-  dpif.dmemstore = 32'h33333333;
-  cif.dwait = 0;
-  cif.dload = 32'h43214321;
-  
-  @(posedge CLK);
-  #(PERIOD*20)
-
-
-
-$finish;
+ 
 end
 endprogram

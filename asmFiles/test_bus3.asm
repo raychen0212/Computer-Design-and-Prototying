@@ -1,28 +1,24 @@
 #core 1
 org 0x0000
-    ori $1, $zero, 5
-    ori $2, $zero, 4
-    lw $3, 0($1) #in shared state 
-    lw $4, 0($2) #stay in shared state
-    add $3, $3, $1
-    add $4, $4, $2
+    ori $1, $zero, 0x400
+    ori $2, $zero, 0x404
+    lw $3, 0($1) #in shared state $3=dead
+    lw $4, 0($2) #stay in shared state $4=beef
+    addi $3, $3, 1
+    addi $4, $4, 4
     sw $3, 0($1) # go to modified state
     sw $4, 0($2) 
-    addi $3, $3, 1 
-    lw $3, 0($1)
     halt
 #core 2
 org 0x0200
-    ori $1, $zero, 5 
-    ori $2, $zero, 6
+    ori $1, $zero, 0x404
+    ori $2, $zero, 0x408
     lw $3, 4($1)
     lw $4, 4($2) 
-    sub $3, $3, $1
-    add $4, $$4, $2
+    addi $3, $3, -8
+    addi $4, $4, 5
     sw $3, 4($1)
     sw $4, 4($2)
-    sub $4, $3, $1
-    lw $4, 4($1)
     halt
 
 org 0x0400

@@ -84,7 +84,7 @@ assign pcen = ((dpif.ihit &ifidif.en)
 
 always_ff@(posedge CLK, negedge nRST)begin
 	if(!nRST)
-		pc = 0;
+		pc = PC_INIT;
 	else if (pcen)
 		pc = next_pc;
 end
@@ -221,8 +221,10 @@ assign dpif.imemREN  = dpif.halt? 0: 1;
 always_ff @(posedge CLK, negedge nRST) begin
   if(!nRST)
     dpif.halt <= 0;
-  else 
-    dpif.halt <= memwbif.halt_i;
+  else if (memwbif.halt_i)
+    dpif.halt <= 1;
+  else
+	dpif.halt <= dpif.halt;
 end
 ////////////////////////////////////////////////////////////////
 ////////////////Forward_unit///////////////////////////////////

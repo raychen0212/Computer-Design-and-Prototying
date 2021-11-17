@@ -81,11 +81,11 @@ always_comb begin : BUS_LOGIC
       if(ccif.cctrans)begin
         nxt_state = ARB;
       end
-      else if (ccif.iREN)begin
-        nxt_state = IF;
-      end
       else if (ccif.dWEN) begin
         nxt_state = WB1;
+      end
+      else if (ccif.iREN)begin
+        nxt_state = IF;
       end
       else begin
         nxt_state = IDLE;
@@ -117,9 +117,11 @@ always_comb begin : BUS_LOGIC
     IF: begin
       if(ccif.ramstate == ACCESS)begin
         if(ccif.cctrans != 0)begin
+          nxt_cache = ~curr_cache;
           nxt_state = ARB;
         end
         else begin
+          nxt_cache = ~curr_cache;
           nxt_state = IDLE;
         end
       end
@@ -132,14 +134,14 @@ always_comb begin : BUS_LOGIC
       nxt_state = (ccif.ramstate == ACCESS) ? WB2 : WB1;
     end
     WB2: begin
-      nxt_state = (ccif.ramstate == ACCESS) ? IDLE : WB2;
+      nxt_state = (~(ccif.dWEN)) ? IDLE : WB2;
     end
 
     LD1: begin
       nxt_state = (ccif.ramstate == ACCESS) ? LD2 : LD1;
     end
     LD2: begin
-      nxt_state = (ccif.ramstate == ACCESS) ? LD2 : IDLE;
+      nxt_state = (ccif.ramstate == ACCESS) ? IDLE: LD2;
     end
     CL1: begin
       nxt_state = (ccif.ramstate == ACCESS) ? CL2 : CL1;
@@ -168,19 +170,50 @@ always_comb begin : OUTPUT_LOGIC
     IDLE: begin
       ccif.ccwait = '0;
     end
+    ARB: begin
+      ccif.ccwait[nxt_snoopfrom] = 1;
+    end
     SNOOP: begin
       ccif.ccsnoopaddr[snoopfrom] = ccif.daddr[snoop];
       ccif.ccwait[snoopfrom] = 1;
     end
     IF: begin
-      if (ccif.iREN[0])begin
+        ccif.iload[curr_cache] = ccif.ramload;
+        ccif.ramaddr = ccif.iaddr[curr_cache];
+        ccif.ramREN = ccif.iREN[curr_cache]; 
+        if(ccif.ramstate != ACCESS)begin
+        ccif.iwait[curr_cache] = '1;
+        end
+        else begin
+          ccif.iwait[curr_cache] = '0;
+        end
+        
+      /*if (ccif.iREN[0])begin
         index = 0;
+        ccif.iload[index] = ccif.ramload;
+        ccif.ramaddr = ccif.iaddr[index];
+        ccif.ramREN = ccif.iREN[index]; 
+        if(ccif.ramstate != ACCESS)begin
+        ccif.iwait[index] = '1;
+        end
+        else begin
+          ccif.iwait[index] = '0;
+        end
       end
       else if (ccif.iREN[1]) begin
         index = 1;
-      end
+        ccif.iload[index] = ccif.ramload;
+        ccif.ramaddr = ccif.iaddr[index];
+        ccif.ramREN = ccif.iREN[index]; 
+        if(ccif.ramstate != ACCESS)begin
+        ccif.iwait[index] = '1;
+        end
+        else begin
+          ccif.iwait[index] = '0;
+        end
+      end*/
 
-      if(ccif.ramstate != ACCESS)begin
+      /*if(ccif.ramstate != ACCESS)begin
         ccif.iwait[index] = '1;
       end
       else begin
@@ -188,7 +221,7 @@ always_comb begin : OUTPUT_LOGIC
       end
       ccif.iload[index] = ccif.ramload;
       ccif.ramaddr = ccif.iaddr[index];
-      ccif.ramREN = ccif.iREN[index]; 
+      ccif.ramREN = ccif.iREN[index]; */
     end
 
     WB1: begin
@@ -199,12 +232,12 @@ always_comb begin : OUTPUT_LOGIC
         ccif.dwait[0] = (ccif.ramstate == ACCESS) ? 0 : 1;
         ccif.ccwait[1] = 1;
       end
-      if(ccif.dWEN[1])begin
+      else if(ccif.dWEN[1])begin
         ccif.ramaddr = ccif.daddr[1];
         ccif.ramWEN = ccif.dWEN[1];
         ccif.ramstore = ccif.dstore[1];
         ccif.dwait[1] = (ccif.ramstate == ACCESS) ? 0 : 1;
-        ccif.ccwait[0] = 1;
+        ccif.ccwait[0] = 0;
       end
     end
 
@@ -217,13 +250,13 @@ always_comb begin : OUTPUT_LOGIC
         ccif.dwait[0] = (ccif.ramstate == ACCESS) ? 0 : 1;
         ccif.ccwait[1] = 1;
       end
-      if(ccif.dWEN[1])begin
+      else if(ccif.dWEN[1])begin
         ccif.dload[1] = ccif.ramload;
         ccif.ramaddr = ccif.daddr[1];
         ccif.ramWEN = ccif.dWEN[1];
         ccif.ramstore = ccif.dstore[1];
         ccif.dwait[1] = (ccif.ramstate == ACCESS) ? 0 : 1;
-        ccif.ccwait[0] = 1;
+        ccif.ccwait[0] = 0;
       end
     end
 
@@ -233,6 +266,7 @@ always_comb begin : OUTPUT_LOGIC
       ccif.ramaddr = ccif.daddr[snoop];
       ccif.ramREN = '1;
       ccif.ccwait[snoopfrom] = '1;
+      ccif.ccsnoopaddr[snoopfrom] = ccif.daddr[snoop];
     end
     LD2: begin
       ccif.dwait[snoop] = (ccif.ramstate == ACCESS) ? 0 : 1;
@@ -240,6 +274,7 @@ always_comb begin : OUTPUT_LOGIC
       ccif.ramaddr = ccif.daddr[snoop];
       ccif.ramREN = '1;
       ccif.ccwait[snoopfrom] = '1;
+      ccif.ccsnoopaddr[snoopfrom] = ccif.daddr[snoop];
     end
 
     CL1: begin
