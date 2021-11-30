@@ -17,6 +17,7 @@ always_comb begin
 	 cuif.imm 	 = cuif.instr[15:0];
 	 cuif.addr 	 = cuif.instr[25:0];
 	 cuif.stopread = 0;
+	 cuif.datomic = 0;
 
 //1-bit signals
 	cuif.RegWr = 1; //rfif.WEN 
@@ -134,6 +135,28 @@ always_comb begin
 					cuif.ALUsrc = 1;//portB = imm
 
 		 end
+	//adding LL and SC
+	LL: begin
+					cuif.RegDst = 1; //wsel = rt;
+					cuif.ALUOp = ALU_ADD;
+					cuif.dREN = 1;
+					cuif.MemToReg = 2'b1;
+					cuif.ALUsrc = 1;//portB = imm
+					cuif.ExtOp		 = 1;
+					cuif.stopread = 1;
+					cuif.datomic = 1;
+	end		
+	SC: begin
+					cuif.RegDst = 1; //wsel = rt;
+					cuif.ALUOp = ALU_ADD;
+					cuif.dWEN = 1;
+					cuif.ALUsrc = 1;//portB = imm
+					cuif.RegWr = 1;
+					cuif.ExtOp		 = 1;
+					cuif.datomic = 1;
+					cuif.MemToReg = 1;
+	end		
+	/////////////////////////	
 //J-type
 	J:begin
 					cuif.PCsrc = 2'b01; //pc = jumpaddr

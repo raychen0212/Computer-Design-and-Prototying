@@ -29,7 +29,8 @@ import cpu_types_pkg::*;
             idexif.lui_imm_o <= '0;
             idexif.funct_o <= funct_t'('0);
             idexif.opcode_o <= opcode_t'('0);
-            idexif.wdat_o = 0;
+            idexif.wdat_o <= 0;
+            idexif.datomic_o <= 0;
         end
         else begin
             if (idexif.flush == 1)begin
@@ -58,7 +59,8 @@ import cpu_types_pkg::*;
                 idexif.lui_imm_o <= '0;
                 idexif.funct_o <= funct_t'('0);
                 idexif.opcode_o <= opcode_t'('0);   
-                idexif.wdat_o = 0;   
+                idexif.wdat_o = 0;
+                idexif.datomic_o <= 0;   
             end
             else if(idexif.en == 1)begin
                 idexif.rdat1_o <= idexif.rdat1_i;
@@ -87,6 +89,7 @@ import cpu_types_pkg::*;
                 idexif.funct_o <= idexif.funct_i;
                 idexif.opcode_o <= idexif.opcode_i; 
                 idexif.wdat_o = idexif.wdat_i;  
+                idexif.datomic_o <= idexif.datomic_i;
             end
             else begin
                 idexif.rdat1_o <= idexif.rdat1_o;
@@ -115,6 +118,7 @@ import cpu_types_pkg::*;
                 idexif.funct_o <= idexif.funct_o;
                 idexif.opcode_o <= idexif.opcode_o;   
                 idexif.wdat_o = idexif.wdat_o;
+                idexif.datomic_o <= idexif.datomic_o;
             end
         end
     end

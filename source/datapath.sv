@@ -207,7 +207,7 @@ end
 
 ////////////////////////////////////////////////////////////
 
-/////////////////////Request Unit Block//////////////////////
+/////////////////////Datapath Signals//////////////////////
 assign ruif.ihit    = dpif.ihit;
 assign ruif.dhit    = dpif.dhit;
 assign ruif.dREN    = idexif.dREN_o;
@@ -216,7 +216,9 @@ assign dpif.dmemREN  = exmemif.dREN_o;
 assign dpif.dmemWEN  = exmemif.dWEN_o;
 assign dpif.imemREN  = dpif.halt? 0: 1;
 ////////////////////////////////////////////////////////////
-
+//datomic logic///////////
+assign dpif.datomic = (exmemif.datomic_o || exmemif.datomic_o);
+////////////////////
 //halt
 always_ff @(posedge CLK, negedge nRST) begin
   if(!nRST)
@@ -307,6 +309,8 @@ always_comb begin : ID_EX_CONNECTION
 	idexif.ExtOp_i = cuif.ExtOp;
 	idexif.ALUOp_i = cuif.ALUOp;
 	idexif.stopread_i = cuif.stopread;
+	//datomic
+	idexif.datomic_i = cuif.datomic;
 	//cputracker only
 	idexif.pc_i = ifidif.pc_o;
 	idexif.next_pc_i = ifidif.next_pc_o;
@@ -328,15 +332,6 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.jaddr_i = idexif.jaddr_o;
 	exmemif.branchaddr_i  = 0 ;
 	exmemif.branchaddr_i = (idexif.imm_o[15] == 1'b1) ? (idexif.pc4_o + ({16'hffff, idexif.imm_o[15:0]} << 2)) : idexif.pc4_o + ({16'h0000, idexif.imm_o[15:0]} << 2);
-	/*
-	if(idexif.imm_o[15] == 1'b1)begin
-			exmemif.branchaddr_i  = idexif.pc4_o + ({16'hffff, idexif.imm_o[15:0]} << 2);
-		end
-	else if(idexif.imm_o[15] == 1'b0)begin
-			exmemif.branchaddr_i  = idexif.pc4_o + ({16'h0000, idexif.imm_o[15:0]} << 2);
-	end
-	*/
-	//exmemif.branchaddr_i = 
 	exmemif.OutputPort_i = aluif.OutputPort;
 	//exmemif.wsel in regfile block
 	exmemif.RegWr_i = idexif.RegWr_o;
@@ -347,6 +342,8 @@ always_comb begin : EX_MEM_CONNECTION
 	exmemif.MemToReg_i = idexif.MemToReg_o;
 	exmemif.PCsrc_i	= idexif.PCsrc_o;
 	exmemif.stopread_i = idexif.stopread_o;
+	//datomic
+	exmemif.datomic_i = idexif.datomic_o;
 	//cputracker only
 	exmemif.pc_i = idexif.pc_o;
 	exmemif.next_pc_i = idexif.next_pc_o;

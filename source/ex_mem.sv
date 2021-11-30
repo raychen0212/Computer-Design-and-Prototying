@@ -29,6 +29,7 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
             exmemif.wdat_o = 0;
             exmemif.rd_o <= '0;
             exmemif.rdat1_o = '0;
+            exmemif.datomic_o <= 0;
         end
         else begin
             if(exmemif.flush == 1)begin
@@ -58,6 +59,7 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
                 exmemif.wdat_o = 0;
                 exmemif.rd_o <= '0;
                 exmemif.rdat1_o = '0;
+                exmemif.datomic_o <= 0;
             end
             else if(exmemif.en == 1)begin
                 exmemif.rdat2_o = exmemif.rdat2_i;
@@ -85,7 +87,8 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
                 exmemif.rt_o <= exmemif.rt_i;
                 exmemif.wdat_o = exmemif.wdat_i;
                 exmemif.rd_o <= exmemif.rd_i;
-                exmemif.rdat1_o = exmemif.rdat1_i;
+                exmemif.rdat1_o <= exmemif.rdat1_i;
+                exmemif.datomic_o <= exmemif.datomic_i;
             end
             else begin
                 exmemif.rdat2_o = exmemif.rdat2_o;
@@ -113,7 +116,8 @@ module ex_mem (input logic CLK, input logic nRST, ex_mem_if.exmem exmemif);
                 exmemif.rt_o <= exmemif.rt_o; 
                 exmemif.wdat_o = exmemif.wdat_o;
                 exmemif.rd_o <= exmemif.rd_o; 
-                exmemif.rdat1_o = exmemif.rdat1_o;
+                exmemif.rdat1_o <= exmemif.rdat1_o;
+                exmemif.datomic_o <= exmemif.datomic_o;
             end
         end
     end

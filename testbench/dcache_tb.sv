@@ -114,6 +114,8 @@ initial begin
   dpif1.dmemaddr = {26'haaaaaa, 3'b01, 3'b000};
   dpif0.dmemstore = '0;
   dpif1.dmemstore = '0;
+  @(posedge CLK)
+  @(posedge CLK)
   // cif1.dwait = 0;
   // cif1.dload = cif0.dstore;
   // cif1.ccwait = 0;
