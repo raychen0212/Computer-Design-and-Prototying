@@ -125,6 +125,7 @@ always_comb begin : BUS_LOGIC
           nxt_state = IDLE;
         end
       end
+      
       else begin
         nxt_state = IF;
       end
