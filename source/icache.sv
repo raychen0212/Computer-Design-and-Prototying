@@ -51,7 +51,7 @@ always_comb begin : icache_logic
     dpif.ihit = '0;
     dpif.imemload = '0;
     cif.iaddr = dpif.imemaddr;
-    cif.iREN = 1;
+    cif.iREN = 0;
     casez (state)
         IDLE: begin
             //cif.iREN = 0;
@@ -64,11 +64,11 @@ always_comb begin : icache_logic
             else begin
                 nxt_state = LOAD;
                 debug = 3'b001;
-                //cif.iREN = 1;
+                cif.iREN = 1;
             end
         end
         LOAD: begin
-            //cif.iREN = 1;
+            cif.iREN = 1;
             dpif.ihit = ~cif.iwait;
             if(!cif.iwait)begin
                 dpif.imemload = cif.iload;

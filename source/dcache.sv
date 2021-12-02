@@ -329,10 +329,7 @@ always_comb begin
         end
 
         SNOOPCHECK:begin
-            if (cif.ccsnoopaddr == link_reg)begin
-                next_link_reg = 0;
-                next_link_valid = 0;
-            end
+
             if (cif.ccwait && snooptag == frame[snoopidx].right.tag)begin
                 if (frame[snoopidx].right.dirty)begin
                     next_state = SNOOP_SHARE1;

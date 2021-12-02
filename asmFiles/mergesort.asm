@@ -118,11 +118,7 @@ m_end:
 
 org 0x300
 size:
-<<<<<<< HEAD
-cfw 12
-=======
 cfw 64
->>>>>>> 456a6a46de76982722efd2e635bb3f64bb1adcdd
 data:
 cfw 90
 cfw 81
@@ -144,8 +140,6 @@ cfw 11
 cfw 29
 cfw 7
 cfw 33
-<<<<<<< HEAD
-=======
 cfw 99
 cfw 27
 cfw 100
@@ -190,7 +184,6 @@ cfw 16
 cfw 50
 cfw 7
 cfw 67
->>>>>>> 456a6a46de76982722efd2e635bb3f64bb1adcdd
 
 org 0x500
 sorted:
