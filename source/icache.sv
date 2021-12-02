@@ -25,7 +25,8 @@ assign icache_addr = icachef_t'(dpif.imemaddr);
 
 assign miss = hit ? 0 : 1;
 
-assign hit = ((frame[icache_addr.idx].tag == icache_addr.tag) && frame[icache_addr.idx].valid && dpif.imemREN) ? 1 : 0;
+//assign hit = ((frame[icache_addr.idx].tag == icache_addr.tag) && frame[icache_addr.idx].valid && dpif.imemREN) ? 1 : 0;
+assign hit = ((frame[icache_addr.idx].tag == icache_addr.tag) && frame[icache_addr.idx].valid) ? 1 : 0;
 always_ff @( posedge CLK, negedge nRST ) begin : icache_ff
     if(nRST == 0)begin
         state <= IDLE;
@@ -46,7 +47,7 @@ always_ff @( posedge CLK, negedge nRST ) begin : icache_ff
     end
 end
 always_comb begin : icache_logic
-    nxt_state = IDLE;
+    nxt_state = state;
     dpif.ihit = '0;
     dpif.imemload = '0;
     cif.iaddr = dpif.imemaddr;
@@ -56,7 +57,7 @@ always_comb begin : icache_logic
             //cif.iREN = 0;
             if(hit)begin
                 debug = 3'b010;
-                dpif.ihit = hit;
+                dpif.ihit = 1;
                 dpif.imemload = frame[icache_addr.idx].data;
                 nxt_state = IDLE;
             end

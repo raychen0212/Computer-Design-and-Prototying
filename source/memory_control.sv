@@ -84,7 +84,7 @@ always_comb begin : BUS_LOGIC
       else if (ccif.dWEN) begin
         nxt_state = WB1;
       end
-      else if (ccif.iREN)begin
+      else if (ccif.iREN[0]||ccif.iREN[1])begin
         nxt_state = IF;
       end
       else begin
@@ -125,10 +125,10 @@ always_comb begin : BUS_LOGIC
           nxt_state = IDLE;
         end
       end
-      
-      else begin
-        nxt_state = IF;
+      if (ccif.dWEN) begin
+        nxt_state = WB1;
       end
+
     end
 
     WB1: begin
