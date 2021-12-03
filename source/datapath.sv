@@ -66,20 +66,10 @@ logic pcen;
 //logic [2:0] PCSrc;
 assign pcen = ((dpif.ihit &ifidif.en) 
  || (exmemif.PCsrc_o == 2'b1)
- || ((exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o) || (exmemif.PCsrc_o == 3'b110 && !exmemif.ZeroFlag_o)) 
+ || ((exmemif.PCsrc_o == 2'b10 && exmemif.ZeroFlag_o)
+ || (exmemif.PCsrc_o == 3'b110 && !exmemif.ZeroFlag_o))
  || (exmemif.PCsrc_o == 2'b11))? 1:0;
-
- /*always_comb begin : PCEN
-	pcen = 0;
-	if(exmemif.dWEN_o || exmemif.MemToReg_o)begin
-		if(dpif.ihit && dpif.dhit && ~ifidif.en)begin
-			pcen = 1;
-		end
-	end
-	else if (dpif.ihit && ifidif.en) begin
-		pcen = 1;
-	end
- end*/
+//assign pcen = (dpif.ihit  & ifidif.en & ~dpif.dhit);
 
 
 always_ff@(posedge CLK, negedge nRST)begin

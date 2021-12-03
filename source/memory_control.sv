@@ -117,18 +117,22 @@ always_comb begin : BUS_LOGIC
     IF: begin
       if(ccif.ramstate == ACCESS)begin
         if(ccif.cctrans != 0)begin
-          //nxt_cache = ~curr_cache;
+          nxt_cache = ~curr_cache;
           nxt_state = ARB;
         end
         else begin
-          //nxt_cache = ~curr_cache;
+          nxt_cache = ~curr_cache;
           nxt_state = IDLE;
         end
       end
+      else begin
+        nxt_cache = ~curr_cache;
+        nxt_state = IDLE;
+      end
       if (ccif.dWEN) begin
+        nxt_cache = ~curr_cache;
         nxt_state = WB1;
       end
-
     end
 
     WB1: begin
@@ -179,7 +183,7 @@ always_comb begin : OUTPUT_LOGIC
       ccif.ccwait[snoopfrom] = 1;
     end
     IF: begin
-        /*ccif.iload[curr_cache] = ccif.ramload;
+        ccif.iload[curr_cache] = ccif.ramload;
         ccif.ramaddr = ccif.iaddr[curr_cache];
         ccif.ramREN = ccif.iREN[curr_cache]; 
         if(ccif.ramstate != ACCESS)begin
@@ -187,9 +191,9 @@ always_comb begin : OUTPUT_LOGIC
         end
         else begin
           ccif.iwait[curr_cache] = '0;
-        end*/
+        end
         
-      if (ccif.iREN[0])begin
+      /*if (ccif.iREN[0])begin
         index = 0;
         ccif.iload[index] = ccif.ramload;
         ccif.ramaddr = ccif.iaddr[index];
@@ -212,7 +216,7 @@ always_comb begin : OUTPUT_LOGIC
         else begin
           ccif.iwait[index] = '0;
         end
-      end
+      end*/
 
       /*if(ccif.ramstate != ACCESS)begin
         ccif.iwait[index] = '1;

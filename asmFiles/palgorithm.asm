@@ -8,8 +8,8 @@
 mainp0:
   push $ra
   ori $t6, $zero, 256
-  ori $t7, $zero, 8
-  ori $t8, $zero, 0
+  ori $t7, $zero, 0xabcd
+  ori $t8, $zero, 1
 getRandom:
   ori $a0, $t7, 0
   jal crc32
@@ -44,6 +44,7 @@ l1:
 
 
 #Second Processor#
+  
   org   0x200             # second processor p1
   ori   $sp, $zero, 0x7ffc  # stack
   jal   mainp1              # go to program
@@ -120,7 +121,7 @@ exit_p2:
   jr $ra
 
 stackpointer:
-  cfw 0x0000
+  cfw 0x5000
 stackbase:
   cfw 0x5000
 org 0xB000

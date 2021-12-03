@@ -147,7 +147,7 @@ always_comb begin
                         next_link_reg = dpif.dmemaddr;
                         next_link_valid = 1;
                     end
-                    if((dcache_addr.tag == frame[dcache_addr.idx].left.tag) && frame[dcache_addr.idx].left.valid)begin
+                    if((dcache_addr.tag == frame[dcache_addr.idx].left.tag) && frame[dcache_addr.idx].left.valid )begin
                         dpif.dhit = 1;
                         if (dcache_addr.blkoff == 1)begin
                             dpif.dmemload = frame[dcache_addr.idx].left.data[1];                
@@ -200,58 +200,94 @@ always_comb begin
                     if ((dpif.dmemaddr == link_reg) && link_valid)begin
                         dpif.dmemload = 1;
                         if((dcache_addr.tag == frame[dcache_addr.idx].left.tag)&& frame[dcache_addr.idx].left.valid )begin//hit
-                            dpif.dhit = 1;
-                            left_dirty = 1;
-                            if (dcache_addr.blkoff == 1)begin
-                                left_data1 = dpif.dmemstore;               
+                            if(frame[dcache_addr.idx].left.dirty)begin
+                                dpif.dhit = 1;
+                                left_dirty = 1;
+                                if (dcache_addr.blkoff == 1)begin
+                                    left_data1 = dpif.dmemstore;               
+                                end
+                                else if (dcache_addr.blkoff == 0)begin
+                                    left_data0 = dpif.dmemstore;                
+                                end
+                                next_hit_counter = hit_counter + 1;
+                                next_recent[dcache_addr.idx] = 0;
+                                next_link_reg = 0;
+                                next_link_valid = 0;
                             end
-                            else if (dcache_addr.blkoff == 0)begin
-                                left_data0 = dpif.dmemstore;                
+                            else begin
+                                next_recent[dcache_addr.idx] = 1;
+                                if (recent[dcache_addr.idx] == 0)begin//left recent
+                                        next_state = MEM0;
+                                        cif.cctrans = 1;
+                                        left_dirty = 1;
+                                end
+                                
+                                else if (recent[dcache_addr.idx] == 1)begin//right recent
+                                        next_state = MEM0;
+                                        cif.cctrans = 1; 
+                                        right_dirty = 1;
+                                    
+                                end
                             end
-                            next_hit_counter = hit_counter + 1;
-                            next_recent[dcache_addr.idx] = 0;
-                            next_link_reg = 0;
-                            next_link_valid = 0;
                         end 
                         else if ((dcache_addr.tag == frame[dcache_addr.idx].right.tag)&& frame[dcache_addr.idx].right.valid )begin
-                            dpif.dhit = 1;
-                            right_dirty = 1;
-                            //cif.cctrans = 1;
-                            if (dcache_addr.blkoff == 1)begin
-                                right_data1 = dpif.dmemstore;               
+                            if(frame[dcache_addr.idx].right.dirty)begin
+                                dpif.dhit = 1;
+                                right_dirty = 1;
+                                //cif.cctrans = 1;
+                                if (dcache_addr.blkoff == 1)begin
+                                    right_data1 = dpif.dmemstore;               
+                                end
+                                else if (dcache_addr.blkoff == 0)begin
+                                    right_data0 = dpif.dmemstore;                
+                                end
+                                next_hit_counter = hit_counter + 1;
+                                next_recent[dcache_addr.idx] = 1;
+                                next_link_reg = 0;
+                                next_link_valid = 0;
                             end
-                            else if (dcache_addr.blkoff == 0)begin
-                                right_data0 = dpif.dmemstore;                
+                            else begin
+                                next_recent[dcache_addr.idx] = 0;
+                                if (recent[dcache_addr.idx] == 0)begin//left recent
+                                        next_state = MEM0;
+                                        cif.cctrans = 1;
+                                        left_dirty = 1;
+                                end
+                                
+                                else if (recent[dcache_addr.idx] == 1)begin//right recent
+                                        next_state = MEM0;
+                                        cif.cctrans = 1; 
+                                        right_dirty = 1;
+                                end
                             end
-                            next_hit_counter = hit_counter + 1;
-                            next_recent[dcache_addr.idx] = 1;
-                            next_link_reg = 0;
-                            next_link_valid = 0;      
+                                  
                         end
                     
                         else begin //miss logic
-                        next_hit_counter = hit_counter - 1;
-                        if (recent[dcache_addr.idx] == 0)begin//left recent
-                            if(frame[dcache_addr.idx].right.dirty)begin
-                                next_state = WB0;   
-                                cif.cctrans = 0;                 
+                            next_hit_counter = hit_counter - 1;
+                            if (recent[dcache_addr.idx] == 0)begin//left recent
+                            next_recent[dcache_addr.idx] = 1;
+                                if(frame[dcache_addr.idx].right.dirty)begin
+                                    next_state = WB0;   
+                                    cif.cctrans = 0;                 
+                                end
+                                else begin
+                                    next_state = MEM0;
+                                    cif.cctrans = 1;
+                                end
                             end
-                            else begin
-                                next_state = MEM0;
-                                cif.cctrans = 1;
+                            else if (recent[dcache_addr.idx] == 1)begin//right recent
+                            next_recent[dcache_addr.idx] = 0;
+                                if(frame[dcache_addr.idx].left.dirty)begin
+                                    next_state = WB0;
+                                    cif.cctrans = 0; 
+                                end
+                                else begin
+                                    next_state = MEM0;
+                                    cif.cctrans = 1; 
+                                end
                             end
                         end
-                        else if (recent[dcache_addr.idx] == 1)begin//right recent
-                            if(frame[dcache_addr.idx].left.dirty)begin
-                                next_state = WB0;
-                                cif.cctrans = 0; 
-                            end
-                            else begin
-                                next_state = MEM0;
-                                cif.cctrans = 1; 
-                            end
-                        end
-                    end
                     end
 
                     else begin//check fail
@@ -298,6 +334,7 @@ always_comb begin
                     else begin //miss logic
                         next_hit_counter = hit_counter - 1;
                         if (recent[dcache_addr.idx] == 0)begin//left recent
+                            left_dirty = 0;
                             if(frame[dcache_addr.idx].right.dirty)begin
                                 next_state = WB0;   
                                 cif.cctrans = 0;                 
@@ -308,6 +345,7 @@ always_comb begin
                             end
                         end
                         else if (recent[dcache_addr.idx] == 1)begin//right recent
+                            right_dirty = 0;
                             if(frame[dcache_addr.idx].left.dirty)begin
                                 next_state = WB0;
                                 cif.cctrans = 0; 
@@ -318,6 +356,7 @@ always_comb begin
                             end
                         end
                     end
+                    
                 end
             end  
 
@@ -329,7 +368,12 @@ always_comb begin
         end
 
         SNOOPCHECK:begin
-
+            if(cif.ccinv)begin
+                if (cif.ccsnoopaddr == link_reg)begin
+                        next_link_reg = 0;
+                        next_link_valid = 0;
+                    end
+            end
             if (cif.ccwait && snooptag == frame[snoopidx].right.tag)begin
                 if (frame[snoopidx].right.dirty)begin
                     next_state = SNOOP_SHARE1;
@@ -396,11 +440,11 @@ always_comb begin
                 if (~cif.dwait)begin
                 next_state = ACCESS;
                 if(cif.ccinv)begin
-                    right_valid = 0;
-                    right_dirty = 0;
-                    right_tag = 0;
-                    right_data0 = 0;
-                    right_data1 = 0;
+                    left_valid = 0;
+                    left_dirty = 0;
+                    left_tag = 0;
+                    left_data0 = 0;
+                    left_data1 = 0;
                 end
                 end
             end
@@ -481,7 +525,7 @@ always_comb begin
             if (recent[dcache_addr.idx] == 1)begin//left
                 left_data1 = cif.dload;
                 left_tag = dcache_addr.tag;
-                left_dirty = 0;
+                //left_dirty = 0;
                 left_valid = 1;
                 if (~cif.dwait)begin
                 next_recent[dcache_addr.idx] = 0;
@@ -490,7 +534,7 @@ always_comb begin
             else if(recent[dcache_addr.idx] == 0)begin//right
                 right_data1 = cif.dload;
                 right_tag = dcache_addr.tag;
-                right_dirty = 0;
+                //right_dirty = 0;
                 right_valid = 1;
                 if (~cif.dwait)begin
                 next_recent[dcache_addr.idx] = 1;

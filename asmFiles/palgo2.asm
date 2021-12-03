@@ -22,7 +22,7 @@
 mainp0:
     push $ra
     ori $t7, $zero, 256     #number of random numbers to generate
-    ori $t8, $zero, 0x3    #Initial seed value
+    ori $t8, $zero, 0xabcd    #Initial seed value
     ori $t9, $zero, 1       
 
 generate:
@@ -51,6 +51,7 @@ l1:
 # Processor 2
 #####################################
   org   0x1000               # second processor p1
+  
   ori   $sp, $zero, 0x7ffc  # stack
   jal   mainp1              # go to program
   halt
