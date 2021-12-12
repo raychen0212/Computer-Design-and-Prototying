@@ -125,14 +125,10 @@ always_comb begin : BUS_LOGIC
           nxt_state = IDLE;
         end
       end
-      else begin
-        nxt_cache = ~curr_cache;
-        nxt_state = IDLE;
-      end
       if (ccif.dWEN) begin
-        nxt_cache = ~curr_cache;
         nxt_state = WB1;
       end
+
     end
 
     WB1: begin

@@ -15,5 +15,6 @@ org 0x0200
 org 0x0400
 data1:
   cfw 0xBAD0BAD0
+org 0x4080
 data2:
   cfw 0xBAD0BAD0
