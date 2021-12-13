@@ -12,4 +12,5 @@ and solidifies an intuition about why hardware is as it is.
 
 Under branches, you'll see singlecycle, pipeline, caches, and multicore branches.
 Those are the code for corresponding labs.
+
 For diagrams, midterm report and final report, it is store in the main branch.
