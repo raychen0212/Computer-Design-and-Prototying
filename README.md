@@ -1,4 +1,4 @@
-# ECE437-Computer-Design-and-Prototying
+# Computer-Design-and-Prototying
 Computer design is the science and art of selecting and interconnecting hardware components
 to build a computer that meets functional, performance and cost goals. In this course, students
 will learn how to completely design a correct single processor computer, including processor
